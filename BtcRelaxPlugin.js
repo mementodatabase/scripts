@@ -11,8 +11,7 @@ function BtcRelaxApi(server, token)
 //}
 
 
-BtcRelaxApi.prototype.prepareEntity(vEntry)
-{
+BtcRelaxApi.prototype.prepareEntity = function(vEntry) {
         var loc = vEntry.field("Loc");
         var nLat = Math.round(loc.lat * 1000000) / 1000000;
         var nLng = Math.round(loc.lng * 1000000) / 1000000;
