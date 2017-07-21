@@ -36,7 +36,7 @@ BtcRelaxApi.prototype.syncEntry = function(vEntry)
     var ServerState=vEntry.field("ServerStatus");
     if (isSent==false)
 	{
-      if (ServerState=="ReadyToSend" ) { if (!this.isReadOnly) { this.newEntry(vEntry);}; };
+        if (!this.isReadOnly) { this.newEntry(vEntry);};
     } else{ this.getEntryState(vEntry) };    
 }
 
