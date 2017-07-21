@@ -44,7 +44,7 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
 {
     var msg=vEntry.field("ServerRequest");
 	var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
-    log("Calling URL:"+callUrl);
+    log("Calling URL:"+callUrl+msg);
     var result=http().get(callUrl+encodeURIComponent(msg));  
     if(result.code==200)
 	{
