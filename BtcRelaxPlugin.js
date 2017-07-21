@@ -49,15 +49,15 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
     if(result.code==200)
 	{
 		var json=JSON.parse(result.body);
-        log("Catched:"+json.body);
-        if (json.bookmarkId !== undefined)
-        {
+                log("Catched:"+json.body);
+               if (json.bookmarkId !== undefined)
+               {
 			var pointId = json.bookmarkId;
-            if (pointId>0)
-            {
-				vEntry.set("isSent",true);
-                vEntry.set("BookmarkId",pointId);
-            };
+			    if (pointId>0)
+			    {
+						vEntry.set("isSent",true);
+				vEntry.set("BookmarkId",pointId);
+			    };
         };
     };		
 }
@@ -165,3 +165,6 @@ BtcRelaxApi.prototype.getRegionPath = function(entry)
 // var bra=new BtcRelaxApi("http://shop.btcrelax.xyz/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
 // bra.validateEntries();
 // bra.syncEntries();
+
+//var cE = entry();
+//bra.syncEntry(cE);
