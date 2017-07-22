@@ -162,9 +162,17 @@ BtcRelaxApi.prototype.getRegionPath = function(entry)
    return res;
 };
 
-// var bra=new BtcRelaxApi("http://shop.btcrelax.xyz/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
-// bra.validateEntries();
-// bra.syncEntries();
+function syncAll()
+{
+   var bra=new BtcRelaxApi("http://shop.btcrelax.xyz/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+   bra.validateEntries();
+   bra.syncEntries();
+}
 
-//var cE = entry();
-//bra.syncEntry(cE);
+function syncCurrent()
+{
+   var bra=new BtcRelaxApi("http://shop.btcrelax.xyz/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+   var cE = entry();
+   bra.validateEntry(cE);
+   bra.syncEntry(cE);
+}
