@@ -24,8 +24,8 @@ BtcRelaxApi.prototype.prepareEntity = function (vEntry) {
                     log("Region name:"+vRegion);  
 					var nUrl = vEntry.field("PublicURL");
 					commands =
-					'[{"type":"AddPoint","inf":{"lat":"' + nLat + '","lng":"' + nLng + '","link":"' + nUrl +
-					'","advName":"' + vAdv + '","price":"' + vPrice + '","region":"' + vRegion + '","descr":"' + vDescr + '"}}]';    
+					'{"type":"AddPoint","inf":{"lat":"' + nLat + '","lng":"' + nLng + '","link":"' + nUrl +
+					'","advName":"' + vAdv + '","price":"' + vPrice + '","region":"' + vRegion + '","descr":"' + vDescr + '"}}';    
 				};    
     return commands;
 };
@@ -129,7 +129,7 @@ BtcRelaxApi.prototype.validateEntry = function(vEntry)
                 var nCmd=this.prepareEntity(vEntry);
                 if (nCmd!=null)
 		{
-                    vEntry.set("ServerStatus","ReadyToSend");
+                    vEntry.set("ServerStatus","Ready");
                     vEntry.set("BookmarkId",0);
                     vEntry.set("ServerRequest",nCmd);
 		};
