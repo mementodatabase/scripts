@@ -49,15 +49,15 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
     if(result.code==200)
 	{
 		var json=JSON.parse(result.body);
-                log("Catched:"+json.body);
                if (json.bookmarkId !== undefined)
                {
 			var pointId = json.bookmarkId;
-			    if (pointId>0)
-			    {
-						vEntry.set("isSent",true);
-				vEntry.set("BookmarkId",pointId);
-			    };
+                        message("Succesfully added point id:"+pointId);
+			if (pointId>0)
+    			    {
+    				vEntry.set("isSent",true);
+    				vEntry.set("BookmarkId",pointId);
+    			    };
         };
     };		
 }
@@ -74,8 +74,17 @@ BtcRelaxApi.prototype.getEntryState = function(vEntry)
                      if(result.code==200) {
                             var json=JSON.parse(result.body);
                             var state =json.serverState;
-                             vEntry.set("ServerStatus",state);
-                             };	
+                            var oldState = vEntry.field('ServerStatus');
+                            vEntry.set("ServerStatus",state);
+                            if (state !== oldState)
+                            {
+                               message("Point id:"+pointId+" changed!");  
+                            };
+                        }
+                    else
+		            {
+		                message("Error getting state for point id:"+pointId);
+		            };
 		 };
 }
 
@@ -112,10 +121,10 @@ BtcRelaxApi.prototype.validateEntry = function(vEntry)
                     {AdvertiseTitle=AdvertiseTitle+" & "+linkedEntry.field("ItemTypeName");}
                     vTotalPrice=vTotalPrice+linkedEntry.field("DefaultPrice");
             };
-            log("Name:"+AdvertiseTitle+":TotalPrice:"+vTotalPrice);  
             var urlToPic = vEntry.field("PublicURL");
             log("URL:"+urlToPic);
-            if (urlToPic===''){ log("Url not found");}
+            if (urlToPic==='')
+            { message("Url for name:"+AdvertiseTitle+" and total price:"+vTotalPrice+" not found");}
         	else    
             {   vEntry.set("FrontTitle",AdvertiseTitle);  			
                 var loc = vEntry.field("Loc");
@@ -127,11 +136,11 @@ BtcRelaxApi.prototype.validateEntry = function(vEntry)
                 vEntry.set("FrontTitle",AdvertiseTitle);  
                 var nCmd=this.prepareEntity(vEntry);
                 if (nCmd!=null)
-		{
-                    vEntry.set("ServerStatus","Ready");
-                    vEntry.set("BookmarkId",0);
-                    vEntry.set("ServerRequest",nCmd);
-		};
+        		{
+                            vEntry.set("ServerStatus","Ready");
+                            vEntry.set("BookmarkId",0);
+                            vEntry.set("ServerRequest",nCmd);
+        		};
             }; 
         };    
 };
@@ -161,16 +170,16 @@ BtcRelaxApi.prototype.getRegionPath = function(entry)
    return res;
 };
 
-function syncAll(vSrever)
+function syncAll(vServer)
 {
-   var bra=new BtcRelaxApi( vSrever + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+   var bra=new BtcRelaxApi( vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
    bra.validateEntries();
    bra.syncEntries();
 }
 
-function syncCurrent(vSrever)
+function syncCurrent(vServer)
 {
-   var bra=new BtcRelaxApi( vSrever + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+   var bra=new BtcRelaxApi( vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
    var cE = entry();
    bra.validateEntry(cE);
    bra.syncEntry(cE);
