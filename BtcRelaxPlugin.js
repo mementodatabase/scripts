@@ -161,16 +161,16 @@ BtcRelaxApi.prototype.getRegionPath = function(entry)
    return res;
 };
 
-function syncAll()
+function syncAll(vSrever)
 {
-   var bra=new BtcRelaxApi("http://shop.btcrelax.xyz/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+   var bra=new BtcRelaxApi( vSrever + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
    bra.validateEntries();
    bra.syncEntries();
 }
 
-function syncCurrent()
+function syncCurrent(vSrever)
 {
-   var bra=new BtcRelaxApi("http://shop.btcrelax.xyz/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+   var bra=new BtcRelaxApi( vSrever + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
    var cE = entry();
    bra.validateEntry(cE);
    bra.syncEntry(cE);
