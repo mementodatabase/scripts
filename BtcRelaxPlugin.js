@@ -37,7 +37,7 @@ BtcRelaxApi.prototype.syncEntry = function(vEntry)
     if (isSent==false)
 	{
         if (!this.isReadOnly) { this.newEntry(vEntry);};
-    } else{ this.getEntryState(vEntry) };    
+    }; 
 }
 
 BtcRelaxApi.prototype.newEntry = function(vEntry)
@@ -51,41 +51,77 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
 		var json=JSON.parse(result.body);
                if (json.bookmarkId !== undefined)
                {
-			var pointId = json.bookmarkId;
-                        message("Succesfully added point id:"+pointId);
-			if (pointId>0)
+			        var pointId = json.bookmarkId;
+			        if (pointId>0)
     			    {
-    				vEntry.set("isSent",true);
-    				vEntry.set("BookmarkId",pointId);
-    			    };
+    					this.newPublication(vEntry, pointId)
+    			    }
+    			    else
+    			    {
+    			           message('Inadequate response from Server while sending!');
+    			           log("Entry with URL:"+vEntry.field("PublicURL")+" rejected by server!");
+    			           exit();
+    			    }
         };
     };		
 }
 
-BtcRelaxApi.prototype.getEntryState = function(vEntry)
+BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
 {
-		var pointId=vEntry.field("BookmarkId");
-		if (pointId>0)
-		 {
-		     var msg = '{"type":"GetPointState","bookmarkId":"' + pointId + '"}'; 
-                     var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
-                     vEntry.set("ServerRequest",callUrl+encodeURIComponent(msg));
-                     var result=http().get(callUrl+encodeURIComponent(msg));  
-                     if(result.code==200) {
+     var isPubCount = vEntrty.field("PublicationEntry").length;
+     if(isPubCount===0)
+     {
+         var pubLib=libByName("Publication");
+         var newPub = new Object();
+         var vRegionTitle=this.getRegionPath(vEntry);
+         newPub["BookmarkId"]=vPointId;
+         newPub["FrontShopTitle"]=vEntry.field("FrontTitle");
+         newPub["Photos"]=vEntry.field("PublicURL");
+         var pub=pubLib.create(newPub);
+         pub.set("Location",vEntry.field("Loc"));
+         pub.set("Price",vEntry.field("TotalPrice"));
+         vEntry.set("PublicationEntry",pub); 
+         vEntry.set("isSent",true);
+     }
+     else
+     {
+         log("Entry with URL:"+vEntry.field("PublicURL")+" already has publication!");
+     }
+}
+
+BtcRelaxApi.prototype.prepareRequest = function(vPub)
+{
+    var pointId=vPub.field("BookmarkId");    
+    if (pointId>0)
+    {    
+         var msg = '{"type":"GetPointState","bookmarkId":"' + pointId + '"}'; 
+         var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+         vPub.set("Request",callUrl+encodeURIComponent(msg));
+         message("Prepared BookmarkId:"+pointId);
+    }
+    else
+    {
+        message("Error getting state for point id:"+pointId);
+    };
+}
+
+BtcRelaxApi.prototype.getPublicationState = function(vPub)
+{
+    this.prepareRequest(vPub);
+    var vRequest = vPub.field("Request");
+    var result=http().get(vRequest);
+    vPub.set("Response",result);
+    if(result.code==200) {
                             var json=JSON.parse(result.body);
                             var state =json.serverState;
-                            var oldState = vEntry.field('ServerStatus');
-                            vEntry.set("ServerStatus",state);
+                            message("Returned status:"+state);
+                            var oldState = vPub.field('Status');
+                            vPub.set("Status",state);
                             if (state !== oldState)
                             {
-                               message("Point id:"+pointId+" changed!");  
+                               message("BookmarkId:"+pointId+" changed!");  
                             };
-                        }
-                    else
-		            {
-		                message("Error getting state for point id:"+pointId);
-		            };
-		 };
+    };
 }
 
 BtcRelaxApi.prototype.syncEntries = function()
@@ -137,8 +173,6 @@ BtcRelaxApi.prototype.validateEntry = function(vEntry)
                 var nCmd=this.prepareEntity(vEntry);
                 if (nCmd!=null)
         		{
-                            vEntry.set("ServerStatus","Ready");
-                            vEntry.set("BookmarkId",0);
                             vEntry.set("ServerRequest",nCmd);
         		};
             }; 
@@ -147,8 +181,8 @@ BtcRelaxApi.prototype.validateEntry = function(vEntry)
 
 BtcRelaxApi.prototype.validateEntries = function()
 {
-        var clib = lib();
-	var entries = clib.entries();
+        var clib = lib(); 
+	    var entries = clib.entries();
         var count =entries.length;
         log("For validate:"+count);
         for(var i=0;i<count;i++)
@@ -157,6 +191,21 @@ BtcRelaxApi.prototype.validateEntries = function()
             this.validateEntry(current);
        };  
  };
+ 
+ BtcRelaxApi.prototype.getPublicationsStates = function()
+ {
+         var clib = lib(); 
+         var entries = clib.entries();
+         var count =entries.length;
+         log("For validate:"+count);
+         for(var i=0;i<count;i++)
+             {
+             var current =entries[i];
+             this.getPublicationState(current);
+        };  
+  };
+  
+ 
  
 BtcRelaxApi.prototype.getRegionPath = function(entry)
 {
@@ -183,4 +232,20 @@ function syncCurrent(vServer)
    var cE = entry();
    bra.validateEntry(cE);
    bra.syncEntry(cE);
+}
+
+function refreshPub(vServer)
+{
+    var bra=new BtcRelaxApi(  vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+    var cE = entry();
+    bra.getPublicationState(cE);
+    
+}
+
+function refreshAllPubs(vServer)
+{
+    var bra=new BtcRelaxApi(  vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+    var cE = entry();
+    bra.getPublicationsStates(cE);
+    
 }
