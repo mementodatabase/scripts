@@ -47,7 +47,9 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
     var result=http().get(callUrl+encodeURIComponent(msg));  
     if(result.code==200)
 	{
-		var json=JSON.parse(result.body);
+		   var rcode=result.code;
+       log("Answer result:"+rcode);
+            var json=JSON.parse(result.body);
                if (json.bookmarkId !== undefined)
                {
 			        var pointId = json.bookmarkId;
