@@ -78,6 +78,7 @@ BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
          newPub["BookmarkId"]=vPointId;
          newPub["FrontShopTitle"]=vEntry.field("FrontTitle");
          newPub["Photos"]=vEntry.field("PublicURL");
+         newPub["RegionTitle"]=vRegionTitle;
          var pub=pubLib.create(newPub);
          pub.set("Location",vEntry.field("Loc"));
          pub.set("Price",vEntry.field("TotalPrice"));
@@ -203,7 +204,8 @@ BtcRelaxApi.prototype.validateEntries = function()
              {
              var current =entries[i];
              this.getPublicationState(current);
-        };  
+             message("Processed:"+i+" of "+count+" items");
+         };  
   };
   
  
