@@ -47,13 +47,13 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
     var result=http().get(callUrl+encodeURIComponent(msg));  
     if(result.code==200)
 	{
-		   var rcode=result.code;
-       log("Answer result:"+rcode);
             var json=JSON.parse(result.body);
-               if (json.bookmarkId !== undefined)
+    	    var rcode=json.code;
+            log("Answer result:"+rcode);
+            if (rcode === 0)
                {
-			        var pointId = json.bookmarkId;
-			        if (pointId>0)
+			    var pointId = json.bookmarkId;
+			    if (pointId>0)
     			    {
     					this.newPublication(vEntry, pointId)
     			    }
@@ -61,10 +61,34 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
     			    {
     			           message('Inadequate response from Server while sending!');
     			           log("Entry with URL:"+vEntry.field("PublicURL")+" rejected by server!");
-    			           exit();
     			    }
-        };
+        	}
+		else
+		{
+			var rmessage=json.message;
+			message("Code:"+rcode+" with message:"+rmessage+" returned while try to insert!");
+		};
     };		
+}
+
+BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
+{
+	switch(vNewState)
+	{ case 'Saled':
+	  vPub.set("FinishDate",memento().ToDate());
+	  break;
+	  case 'Rejected':
+	  vPub.set("FinishDate",memento().ToDate());	
+		break;
+	   case 'Published':
+	   vPub.set("StartDate",memento().ToDate());
+		break;
+	   default:
+			message("Unknown state!");
+			exit();
+		break;
+	};
+	vPub.set("Status",vNewState);	
 }
 
 BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
@@ -112,16 +136,16 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
     this.prepareRequest(vPub);
     var vRequest = vPub.field("Request");
     var result=http().get(vRequest);
-    vPub.set("Response",result);
     if(result.code==200) {
-                            var json=JSON.parse(result.body);
-                            var state =json.serverState;
-                            log("Returned status:"+state);
-                            var oldState = vPub.field('Status');
-                            vPub.set("Status",state);
-                            if (state !== oldState)
+                var json=JSON.parse(result.body);
+    		vPub.set("Response",result);
+	    	var state =json.serverState;
+                log("Returned status:"+state);
+                var oldState = vPub.field('Status');
+                if (state !== oldState)
                             {
-                               message("BookmarkId:"+pointId+" changed!");  
+                            	this.setNewState(vPub,state);
+				    message("BookmarkId:"+pointId+" changed!");  
                             };
     };
 }
@@ -252,3 +276,8 @@ function refreshAllPubs(vServer)
     bra.getPublicationsStates(cE);
     
 }
+
+//refreshAllPubs('https://ua.bitganj.website');
+//refreshPub('https://ua.bitganj.website');
+//syncCurrent('https://ua.bitganj.website');
+//syncAll('https://ua.bitganj.website');
