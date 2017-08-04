@@ -75,13 +75,13 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 {
 	switch(vNewState)
 	{ case 'Saled':
-	  vPub.set("FinishDate",moment().ToDate());
+	  vPub.set("FinishDate",moment().toDate());
 	  break;
 	  case 'Rejected':
-	  vPub.set("FinishDate",moment().ToDate());	
+	  vPub.set("FinishDate",moment().toDate());	
 		break;
 	   case 'Published':
-	   vPub.set("StartDate",moment().ToDate());
+	   vPub.set("StartDate",moment().toDate());
 		break;
 	   default:
 			message("Unknown state!");
@@ -139,7 +139,8 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
     if(result.code==200) {
                 var json=JSON.parse(result.body);
     		vPub.set("Response",result);
-	    	var state =json.serverState;
+	    	var pointId=vPub.field("BookmarkId");
+var state =json.serverState;
                 log("Returned status:"+state);
                 var oldState = vPub.field('Status');
                 if (state !== oldState)
