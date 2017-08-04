@@ -75,13 +75,13 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 {
 	switch(vNewState)
 	{ case 'Saled':
-	  vPub.set("FinishDate",memento().ToDate());
+	  vPub.set("FinishDate",moment().ToDate());
 	  break;
 	  case 'Rejected':
-	  vPub.set("FinishDate",memento().ToDate());	
+	  vPub.set("FinishDate",moment().ToDate());	
 		break;
 	   case 'Published':
-	   vPub.set("StartDate",memento().ToDate());
+	   vPub.set("StartDate",moment().ToDate());
 		break;
 	   default:
 			message("Unknown state!");
