@@ -98,7 +98,7 @@ BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
      {
          var pubLib=libByName("Publication");
          var newPub = new Object();
-         var vRegionTitle=this.getRegionPath(vEntry);
+         var vRegionTitle=this.getRegionPath(vEntry.field("Regions")[0]);
          newPub["BookmarkId"]=vPointId;
          newPub["FrontShopTitle"]=vEntry.field("FrontTitle");
          newPub["Photos"]=vEntry.field("PublicURL");
