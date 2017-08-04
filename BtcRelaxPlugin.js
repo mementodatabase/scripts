@@ -136,9 +136,10 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
     this.prepareRequest(vPub);
     var vRequest = vPub.field("Request");
     var result=http().get(vRequest);
+log(result);
     if(result.code==200) {
                 var json=JSON.parse(result.body);
-    		vPub.set("Response",JSON.stringify(result));
+    		vPub.set("Response",JSON.stringify(json));
 	    	var pointId=vPub.field("BookmarkId");
 var state =json.serverState;
                 log("Returned status:"+state);
