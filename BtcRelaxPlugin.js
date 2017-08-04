@@ -33,8 +33,8 @@ BtcRelaxApi.prototype.prepareEntity = function (vEntry) {
 BtcRelaxApi.prototype.syncEntry = function(vEntry)
 {
     var isSent=vEntry.field("isSent");
-    if (isSent==false)
-	{
+    if (isSent===false)
+   	{
         if (!this.isReadOnly) { this.newEntry(vEntry);};
     }; 
 }
@@ -55,7 +55,7 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
 			    var pointId = json.bookmarkId;
 			    if (pointId>0)
     			    {
-    					this.newPublication(vEntry, pointId)
+    					    this.newPublication(vEntry, pointId)
     			    }
     			    else
     			    {
@@ -138,7 +138,7 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
     var result=http().get(vRequest);
     if(result.code==200) {
                 var json=JSON.parse(result.body);
-    		vPub.set("Response",result);
+    		vPub.set("Response",JSON.stringify(result));
 	    	var pointId=vPub.field("BookmarkId");
 var state =json.serverState;
                 log("Returned status:"+state);
