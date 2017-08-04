@@ -93,7 +93,7 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 
 BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
 {
-     var isPubCount = vEntrty.field("PublicationEntry").length;
+     var isPubCount = vEntry.field("PublicationEntry").length;
      if(isPubCount===0)
      {
          var pubLib=libByName("Publication");
@@ -145,7 +145,7 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
                 if (state !== oldState)
                             {
                             	this.setNewState(vPub,state);
-				    message("BookmarkId:"+pointId+" changed!");  
+				message("BookmarkId:"+pointId+" changed!");  
                             };
     };
 }
