@@ -83,7 +83,10 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 	   case 'Published':
 	   vPub.set("StartDate",moment().toDate());
 		break;
-	   default:
+    case 'PreOrdered':
+     message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
+	  break;
+      default:
 			message("Unknown state!");
 			exit();
 		break;
