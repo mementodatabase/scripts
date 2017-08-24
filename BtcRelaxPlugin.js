@@ -150,7 +150,7 @@ var state =json.serverState;
                 log("Returned status:"+state);
                 var oldState = vPub.field('Status');
                 var orderId = json.OrderId;
-              . log("OrderId:"+orderId);
+                log("OrderId:"+orderId);
                 if (orderId !== undefined)
                 {
                       vPub.set("OrderId", orderId);
