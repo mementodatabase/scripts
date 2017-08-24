@@ -149,6 +149,11 @@ log(result);
 var state =json.serverState;
                 log("Returned status:"+state);
                 var oldState = vPub.field('Status');
+                var orderId = json.OrderId;
+              . if (orderId !== undefined)
+                {
+                      vPub.set("OrderId", orderId);
+                 };
                 if (state !== oldState)
                             {
                             	this.setNewState(vPub,state);
