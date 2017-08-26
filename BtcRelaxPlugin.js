@@ -96,6 +96,15 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 	vPub.set("Status",vNewState);	
 }
 
+BtcRelaxApi.prototype.newOrder = 
+function(vOrderId)
+{
+ var vOrderLib=libByName("Orders");
+ var vNewOrder=new Object();
+ vNewOrder["OrderId"]=vOrderId;
+ vOrderLib.create(vNewOrder);
+}
+
 BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
 {
      var isPubCount = vEntry.field("PublicationEntry").length;
@@ -290,7 +299,16 @@ function refreshAllPubs(vServer)
     
 }
 
+function addOrder(vServer, vOrderId)
+{
+    var bra=new BtcRelaxApi(  vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+    var cE = entry();
+    bra.newOrder(vOrderId);
+}
+
+
 //refreshAllPubs('https://ua.bitganj.website');
 //refreshPub('https://ua.bitganj.website');
 //syncCurrent('https://ua.bitganj.website');
 //syncAll('https://ua.bitganj.website');
+//addOrder('https://ua.bitganj.website',vNew)
