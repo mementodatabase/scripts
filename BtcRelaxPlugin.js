@@ -99,25 +99,28 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 BtcRelaxApi.prototype.getOrderById = 
 function(vOrderId)
 {
-        var vResult;
-	var vOrderLib=libByName("Orders");
+   log("Getting order Id:"+vOrderId);
+   var vResult;
+   var vOrderLib=libByName("Orders");
         var entries = vOrderLib.entries();
         var count =entries.length;       
+        log("Local library, already has:"+count+" orders.");  
         for(var i=0;i<count;i++)
         {
              var current =entries[i];
              var vCurId =current.field("OrderId");
-	     if (vOrderId===vCurId)
-	     {
-	     	log("Order with id:"+vOrderId+" already exist!");
-		vResult = current;
-		return vResult;     
-	     }
-	};  
-	var vNewOrder=new Object();
+	           if (vOrderId===vCurId)
+	         {
+	     	      log("Order with id:"+vOrderId+" already exist!");
+		          vResult = current;
+		           return vResult;     
+	         };
+      	};  
+        log("Creating new object");
+	      var vNewOrder=new Object();
         vNewOrder["OrderId"]=vOrderId;
- 	vResult = vOrderLib.create(vNewOrder);
-	log("Order with id:"+vOrderId+" created!");
+        	vResult = vOrderLib.create(vNewOrder);
+	      log("Order with id:"+vOrderId+" created!");
 	return vResult; 
 }
 
@@ -178,14 +181,14 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
                 if (orderId !== undefined)
                 {
                       log("OrderId:"+orderId);
-		      vPub.set("OrderId", orderId);
-		      var vOrder = this.getOrderById(orderId);
-		      vOrder.set("PublicationEntry",vPub); 
+		              vPub.set("OrderId", orderId);
+		              var vOrder = this.getOrderById(orderId);
+		              vOrder.set("PublicationEntry",vPub); 
                 };
                 if (state !== oldState)
                 {
                             	this.setNewState(vPub,state);
-				message("BookmarkId:"+pointId+" changed!");  
+				             message("BookmarkId:"+pointId+" changed!");  
                 };
     };
 }
