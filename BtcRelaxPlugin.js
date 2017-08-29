@@ -164,6 +164,22 @@ BtcRelaxApi.prototype.prepareRequest = function(vPub)
     };
 }
 
+BtcRelaxApi.prototype.prepareOrderRequest = function(vOrder)
+{
+    var vOrderId=vOrder.field("OrderId");    
+    if ( vOrderId>0)
+    {    
+         var msg = '{"type":"GetOrderById","OrderId":"' + vOrderId + '"}'; 
+         var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+         vOrder=set("Request",callUrl+encodeURIComponent(msg));
+    }
+    else
+    {
+        message("Error getting for order id:"+vOrderId);
+    };
+}
+
+
 BtcRelaxApi.prototype.getPublicationState = function(vPub)
 {
     this.prepareRequest(vPub);
@@ -184,7 +200,8 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
 		              vPub.set("OrderId", orderId);
 		              var vOrder = this.getOrderById(orderId);
 		              vOrder.set("PublicationEntry",vPub); 
-                };
+                  this.prepareOrderRequest(vOrder);
+};
                 if (state !== oldState)
                 {
                             	this.setNewState(vPub,state);
