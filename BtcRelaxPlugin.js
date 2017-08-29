@@ -96,13 +96,29 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 	vPub.set("Status",vNewState);	
 }
 
-BtcRelaxApi.prototype.newOrder = 
+BtcRelaxApi.prototype.getOrderById = 
 function(vOrderId)
 {
- var vOrderLib=libByName("Orders");
- var vNewOrder=new Object();
- vNewOrder["OrderId"]=vOrderId;
- vOrderLib.create(vNewOrder);
+        var vResult;
+	var vOrderLib=libByName("Orders");
+        var entries = vOrderLib.entries();
+        var count =entries.length;       
+        for(var i=0;i<count;i++)
+        {
+             var current =entries[i];
+             var vCurId =current.field("OrderId");
+	     if (vOrderId===vCurId)
+	     {
+	     	log("Order with id:"+vOrderId+" already exist!");
+		vResult = current;
+		return vResult;     
+	     }
+	};  
+	var vNewOrder=new Object();
+        vNewOrder["OrderId"]=vOrderId;
+ 	vResult = vOrderLib.create(vNewOrder);
+	log("Order with id:"+vOrderId+" created!");
+	return vResult; 
 }
 
 BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
@@ -150,25 +166,27 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
     this.prepareRequest(vPub);
     var vRequest = vPub.field("Request");
     var result=http().get(vRequest);
-log(result);
+    log(result);
     if(result.code==200) {
                 var json=JSON.parse(result.body);
     		vPub.set("Response",JSON.stringify(json));
 	    	var pointId=vPub.field("BookmarkId");
-var state =json.serverState;
-                log("Returned status:"+state);
+                var state =json.serverState;
+                log("Returned status:"+state);	    
                 var oldState = vPub.field('Status');
                 var orderId = json.OrderId;
-                log("OrderId:"+orderId);
                 if (orderId !== undefined)
                 {
-                      vPub.set("OrderId", orderId);
-                 };
+                      log("OrderId:"+orderId);
+		      vPub.set("OrderId", orderId);
+		      var vOrder = this.getOrderById(orderId);
+		      vOrder.set("PublicationEntry",vPub); 
+                };
                 if (state !== oldState)
-                            {
+                {
                             	this.setNewState(vPub,state);
 				message("BookmarkId:"+pointId+" changed!");  
-                            };
+                };
     };
 }
 
@@ -299,16 +317,7 @@ function refreshAllPubs(vServer)
     
 }
 
-function addOrder(vServer, vOrderId)
-{
-    var bra=new BtcRelaxApi(  vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
-    var cE = entry();
-    bra.newOrder(vOrderId);
-}
-
-
 //refreshAllPubs('https://ua.bitganj.website');
 //refreshPub('https://ua.bitganj.website');
 //syncCurrent('https://ua.bitganj.website');
 //syncAll('https://ua.bitganj.website');
-//addOrder('https://ua.bitganj.website',vNew)
