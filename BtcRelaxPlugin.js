@@ -109,7 +109,7 @@ function(vOrderId)
         {
              var current =entries[i];
              var vCurId =current.field("OrderId");
-	           if (vOrderId===vCurId)
+	           if (vOrderId==vCurId)
 	         {
 	     	      log("Order with id:"+vOrderId+" already exist!");
 		          vResult = current;
