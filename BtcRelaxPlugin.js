@@ -196,12 +196,15 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
                 var orderId = json.OrderId;
                 if (orderId !== undefined)
                 {
-                      log("OrderId:"+orderId);
+                  log("OrderId:"+orderId);
 		              vPub.set("OrderId", orderId);
 		              var vOrder = this.getOrderById(orderId);
-		              vOrder.set("PublicationEntry",vPub); 
+		              if (vOrder!==undefined)
+                  {
+                  vOrder.set("PublicationEntry",vPub); 
                   this.prepareOrderRequest(vOrder);
-};
+                  };
+                };
                 if (state !== oldState)
                 {
                             	this.setNewState(vPub,state);
