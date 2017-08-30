@@ -193,7 +193,7 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
                 log("Returned status:"+state);	    
                 var oldState = vPub.field('Status');
                 var orderId = json.OrderId;
-                if (orderId !== undefined)
+                if (orderId>0)
                 {
                   log("OrderId:"+orderId);
 		              vPub.set("OrderId", orderId);
