@@ -171,7 +171,7 @@ BtcRelaxApi.prototype.prepareOrderRequest = function(vOrder)
     {    
          var msg = '{"type":"GetOrderById","OrderId":"' + vOrderId + '"}'; 
          var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
-         vOrder=set("Request",callUrl+encodeURIComponent(msg));
+         vOrder.set("Request",callUrl+encodeURIComponent(msg));
     }
     else
     {
