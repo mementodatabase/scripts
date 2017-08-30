@@ -185,7 +185,6 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
     this.prepareRequest(vPub);
     var vRequest = vPub.field("Request");
     var result=http().get(vRequest);
-    log(result);
     if(result.code==200) {
                 var json=JSON.parse(result.body);
     		vPub.set("Response",JSON.stringify(json));
@@ -212,6 +211,22 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
                 };
     };
 }
+
+BtcRelaxApi.prototype.getOrderState = function(vOrder)
+{
+    this.prepareOrderRequest(vOrder);
+    var vRequest = vOrder.field("Request");
+    var result=http().get(vRequest);
+    if(result.code==200) {
+                var json=JSON.parse(result.body);
+    		vOrder.set("Response",JSON.stringify(json));
+                var state =json.serverState;
+                var vInvoiceAddress=json.invoiceAddress;
+                vOrder.set("state",state);
+                vOrder.set("InvoiceAddress",vInvoiceAddress);
+    };
+}
+
 
 BtcRelaxApi.prototype.syncEntries = function()
 {
