@@ -201,7 +201,7 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
 		              if (vOrder!==undefined)
                   {
                   vOrder.set("PublicationEntry",vPub); 
-                  this.prepareOrderRequest(vOrder);
+                  this.getOrderState(vOrder);
                   };
                 };
                 if (state !== oldState)
