@@ -42,7 +42,7 @@ BtcRelaxApi.prototype.syncEntry = function(vEntry)
 BtcRelaxApi.prototype.newEntry = function(vEntry)
 {
     var msg=vEntry.field("ServerRequest");
-    var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+    var callUrl=this.server+"/PointsApi.php"+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
     log("Calling URL:"+callUrl+msg);
     var result=http().get(callUrl+encodeURIComponent(msg));  
     if(result.code==200)
@@ -155,7 +155,7 @@ BtcRelaxApi.prototype.prepareRequest = function(vPub)
     {    
          log("Preparing bookmark Id:"+pointId);
 	 var msg = '{"type":"GetPointState","bookmarkId":"' + pointId + '"}'; 
-         var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+         var callUrl=this.server+"/PointsApi.php"+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
          vPub.set("Request",callUrl+encodeURIComponent(msg));
     }
     else
@@ -170,7 +170,7 @@ BtcRelaxApi.prototype.prepareOrderRequest = function(vOrder)
     if ( vOrderId>0)
     {    
          var msg = '{"type":"GetOrderById","OrderId":"' + vOrderId + '"}'; 
-         var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+         var callUrl=this.server+"/OrdersApi.php"+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
          vOrder.set("Request",callUrl+encodeURIComponent(msg));
     }
     else
@@ -311,7 +311,7 @@ BtcRelaxApi.prototype.getRegionPath = function(entry)
 
 function syncAll(vServer)
 {
-   var bra=new BtcRelaxApi( vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+   var bra=new BtcRelaxApi( vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
    bra.validateEntries();
    bra.syncEntries();
 }
@@ -326,7 +326,7 @@ function syncCurrent(vServer)
 
 function refreshPub(vServer)
 {
-    var bra=new BtcRelaxApi(  vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+    var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
     var cE = entry();
     bra.getPublicationState(cE);
     
@@ -334,7 +334,7 @@ function refreshPub(vServer)
 
 function refreshAllPubs(vServer)
 {
-    var bra=new BtcRelaxApi(  vServer + "/PointsApi.php",2,"be55d4034229177ca6f864a87cb630d3", false);
+    var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
     var cE = entry();
     bra.getPublicationsStates(cE);
     
