@@ -83,13 +83,17 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 	   case 'Published':
 	   vPub.set("StartDate",moment().toDate());
 		break;
-    case 'PreOrdered':
-     message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
+         case 'PreOrdered':
+         message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
+              break;
+        case 'Preparing':
+           message("Bookmark id:"+vPub.field("BookmarkId")+" need for revision!");
 	   break;
-    case 'Preparing':
-     message("Bookmark id:"+vPub.field("BookmarkId")+" need for revision!");
+        case 'Lost':
+           vPub.set("FinishDate",moment().toDate());
+           message("Bookmark id:"+vPub.field("BookmarkId")+" was lost!");
 	   break;
-   default:
+        default:
    	 message("Bookmark id:"+vPub.field("BookmarkId")+" has unknown state:"+vNewState);
 		break;
 	};
