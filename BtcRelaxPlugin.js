@@ -358,8 +358,3 @@ function refreshAllPubs(vServer)
     bra.getPublicationsStates(cE);
     
 }
-
-//refreshAllPubs('https://ua.bitganj.website');
-//refreshPub('https://ua.bitganj.website');
-//syncCurrent('https://ua.bitganj.website');
-//syncAll('https://ua.bitganj.website');
