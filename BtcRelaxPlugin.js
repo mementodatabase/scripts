@@ -39,7 +39,7 @@ BtcRelaxApi.prototype.syncEntry = function(vEntry)
    	{
         if (!this.isReadOnly) { this.newEntry(vEntry);};
     }; 
-}
+};
 
 BtcRelaxApi.prototype.newEntry = function(vEntry)
 {
@@ -71,7 +71,7 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
 			message("Code:"+rcode+" with message:"+rmessage+" returned while try to insert!");
 		};
     };		
-}
+};
 
 BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 {
@@ -100,7 +100,7 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 		break;
 	};
 	vPub.set("Status",vNewState);	
-}
+};
 
 BtcRelaxApi.prototype.getIterateOrders=function()
 {
@@ -120,7 +120,7 @@ BtcRelaxApi.prototype.getIterateOrders=function()
             //current.set("ChainResponse", JSON.stringify(vCRes)); 
         }; 
     };     
-}
+};
 
 
 BtcRelaxApi.prototype.getOrderById = 
@@ -149,7 +149,7 @@ function(vOrderId)
         	vResult = vOrderLib.create(vNewOrder);
 	      log("Order with id:"+vOrderId+" created!");
 	return vResult; 
-}
+};
 
 BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
 {
@@ -173,7 +173,7 @@ BtcRelaxApi.prototype.newPublication = function(vEntry, vPointId)
      {
          log("Entry with URL:"+vEntry.field("PublicURL")+" already has publication!");
      }
-}
+};
 
 BtcRelaxApi.prototype.prepareRequest = function(vPub)
 {
@@ -189,7 +189,7 @@ BtcRelaxApi.prototype.prepareRequest = function(vPub)
     {
         message("Error getting state for point id:"+pointId);
     };
-}
+};
 
 BtcRelaxApi.prototype.prepareOrderRequest = function(vOrder)
 {
@@ -204,7 +204,7 @@ BtcRelaxApi.prototype.prepareOrderRequest = function(vOrder)
     {
         message("Error getting for order id:"+vOrderId);
     };
-}
+};
 
 BtcRelaxApi.prototype.getPublicationState = function(vPub)
 {
@@ -236,14 +236,14 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
 				             message("BookmarkId:"+pointId+" changed!");  
                 };
     };
-}
+};
 
 BtcRelaxApi.prototype.getOrderState = function(vOrder)
 {
     this.prepareOrderRequest(vOrder);
     var vRequest = vOrder.field("Request");
     var result=http().get(vRequest);
-    if(result.code==200) {
+    if(result.code===200) {
                 var json=JSON.parse(result.body);
     		vOrder.set("Response",JSON.stringify(json));
                 var state =json.serverState;
@@ -251,20 +251,20 @@ BtcRelaxApi.prototype.getOrderState = function(vOrder)
                 vOrder.set("state",state);
                 vOrder.set("InvoiceAddress",vInvoiceAddress);
     };
-}
+};
 
 BtcRelaxApi.prototype.queryChain = function(vOrder)
 {
     var vRequest = vOrder.field("ChainRequest");
     var result=http().get(vRequest);
-    if(result.code==200) {
+    if(result.code===200) {
                 var json=JSON.parse(result.body);
     		vOrder.set("ChainResponse",JSON.stringify(json));
                 var vReceived =json.address.received;
                 var vBalance=json.address.balance;
                 vOrder.set("InvoiceBalance",vBalance);
     };
-}
+};
 
 
 BtcRelaxApi.prototype.syncEntries = function()
@@ -366,7 +366,7 @@ function syncAll(vServer)
    var bra=new BtcRelaxApi( vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
    bra.validateEntries();
    bra.syncEntries();
-}
+};
 
 function syncCurrent(vServer)
 {
@@ -374,7 +374,7 @@ function syncCurrent(vServer)
    var cE = entry();
    bra.validateEntry(cE);
    bra.syncEntry(cE);
-}
+};
 
 function refreshPub(vServer)
 {
@@ -382,14 +382,14 @@ function refreshPub(vServer)
     var cE = entry();
     bra.getPublicationState(cE);
     
-}
+};
 
 function refreshAllPubs(vServer)
 {
     var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
     bra.getPublicationsStates();
     
-}
+};
 
 
 
@@ -397,7 +397,7 @@ function refreshAllOrders(vServer)
 {
     var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
     bra.getIterateOrders();    
-}
+};
 
 //refreshAllPubs('https://ua.bitganj.website');
 //refreshPub('https://ua.bitganj.website');
