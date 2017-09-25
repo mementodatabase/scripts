@@ -107,20 +107,21 @@ BtcRelaxApi.prototype.getIterateOrders=function()
     var clib = lib(); 
     var entries =clib.entries(); 
     var count =entries.length; 
+    log("Total orders:"+count);    
     for (i=0;i<count;i++) 
     {         
         var current=entries[i]; 
         var vAddr=current.field("InvoiceAddress"); 
         if (vAddr.length>0) 
         { 
-            var req="https://api.smartbit.com.au/v1/blockchain/address/"+vAddr+"?tx=0"; 
+            log("Checking order:"+current.field("OrderId"));
+	    var req="https://api.smartbit.com.au/v1/blockchain/address/"+vAddr+"?tx=0"; 
             current.set("ChainRequest",req); 
-            //var vCRes=queryChain(req); 
             this.queryChain(current); 
-            //current.set("ChainResponse", JSON.stringify(vCRes)); 
         }; 
     };     
 };
+
 
 
 BtcRelaxApi.prototype.getOrderById = 
@@ -250,6 +251,7 @@ BtcRelaxApi.prototype.getOrderState = function(vOrder)
                 var vInvoiceAddress=json.invoiceAddress;
                 vOrder.set("state",state);
                 vOrder.set("InvoiceAddress",vInvoiceAddress);
+                vOrder.set("Modified",moment().toDate());
     };
 };
 
@@ -260,9 +262,17 @@ BtcRelaxApi.prototype.queryChain = function(vOrder)
     if(result.code===200) {
                 var json=JSON.parse(result.body);
     		vOrder.set("ChainResponse",JSON.stringify(json));
-                var vReceived =json.address.received;
-                var vBalance=json.address.balance;
-                vOrder.set("InvoiceBalance",vBalance);
+                var vSuc =json.success;
+                if (vSuc)
+		{
+			var vAdrInf=json.address;
+			var vTotal=vAdrInf.total;
+			var vBalance=vTotal.balance;
+			var vReceived=vTotal.received;			
+		        vOrder.set("AddressBalance",vBalance);
+	                vOrder.set("Received",vReceived);
+	                vOrder.set("Modified",moment().toDate());
+		};
     };
 };
 
@@ -403,3 +413,4 @@ function refreshAllOrders(vServer)
 //refreshPub('https://ua.bitganj.website');
 //syncCurrent('https://ua.bitganj.website');
 //syncAll('https://ua.bitganj.website');
+//refreshAllOrders('https://ua.bitganj.website');
