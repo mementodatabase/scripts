@@ -398,7 +398,7 @@ function refreshAllPubs(vServer)
 {
     var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
     bra.getPublicationsStates();
-    
+    bra.getIterateOrders();    
 };
 
 
