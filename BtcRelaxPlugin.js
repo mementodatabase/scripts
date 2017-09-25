@@ -1,3 +1,5 @@
+/* global http */
+
 function BtcRelaxApi( v_server , v_tokenId, v_tokenKey, v_readOnly )
 {
     this.server = v_server;
@@ -100,6 +102,27 @@ BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
 	vPub.set("Status",vNewState);	
 }
 
+BtcRelaxApi.prototype.getIterateOrders=function()
+{
+    var clib = lib(); 
+    var entries =clib.entries(); 
+    var count =entries.length; 
+    for (i=0;i<count;i++) 
+    {         
+        var current=entries[i]; 
+        var vAddr=current.field("InvoiceAddress"); 
+        if (vAddr.length>0) 
+        { 
+            var req="https://api.smartbit.com.au/v1/blockchain/address/"+vAddr+"?tx=0"; 
+            current.set("ChainRequest",req); 
+            //var vCRes=queryChain(req); 
+            this.queryChain(current); 
+            //current.set("ChainResponse", JSON.stringify(vCRes)); 
+        }; 
+    };     
+}
+
+
 BtcRelaxApi.prototype.getOrderById = 
 function(vOrderId)
 {
@@ -183,7 +206,6 @@ BtcRelaxApi.prototype.prepareOrderRequest = function(vOrder)
     };
 }
 
-
 BtcRelaxApi.prototype.getPublicationState = function(vPub)
 {
     this.prepareRequest(vPub);
@@ -228,6 +250,19 @@ BtcRelaxApi.prototype.getOrderState = function(vOrder)
                 var vInvoiceAddress=json.invoiceAddress;
                 vOrder.set("state",state);
                 vOrder.set("InvoiceAddress",vInvoiceAddress);
+    };
+}
+
+BtcRelaxApi.prototype.queryChain = function(vOrder)
+{
+    var vRequest = vOrder.field("ChainRequest");
+    var result=http().get(vRequest);
+    if(result.code==200) {
+                var json=JSON.parse(result.body);
+    		vOrder.set("ChainResponse",JSON.stringify(json));
+                var vReceived =json.address.received;
+                var vBalance=json.address.balance;
+                vOrder.set("InvoiceBalance",vBalance);
     };
 }
 
@@ -300,7 +335,7 @@ BtcRelaxApi.prototype.validateEntries = function()
        };  
  };
  
- BtcRelaxApi.prototype.getPublicationsStates = function()
+BtcRelaxApi.prototype.getPublicationsStates = function()
  {
          var clib = lib(); 
          var entries = clib.entries();
@@ -313,9 +348,7 @@ BtcRelaxApi.prototype.validateEntries = function()
              message("Processed:"+i+" of "+count+" items");
          };  
   };
-  
- 
- 
+
 BtcRelaxApi.prototype.getRegionPath = function(entry)
 {
    var res;
@@ -354,9 +387,16 @@ function refreshPub(vServer)
 function refreshAllPubs(vServer)
 {
     var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
-    var cE = entry();
-    bra.getPublicationsStates(cE);
+    bra.getPublicationsStates();
     
+}
+
+
+
+function refreshAllOrders(vServer)
+{
+    var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
+    bra.getIterateOrders();    
 }
 
 //refreshAllPubs('https://ua.bitganj.website');
