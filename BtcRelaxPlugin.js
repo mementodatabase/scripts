@@ -111,14 +111,7 @@ BtcRelaxApi.prototype.getIterateOrders=function()
     for (i=0;i<count;i++) 
     {         
         var current=entries[i]; 
-        var vAddr=current.field("InvoiceAddress"); 
-        if (vAddr.length>0) 
-        { 
-            log("Checking order:"+current.field("OrderId"));
-	    var req="https://api.smartbit.com.au/v1/blockchain/address/"+vAddr+"?tx=0"; 
-            current.set("ChainRequest",req); 
-            this.queryChain(current); 
-        }; 
+        this.queryChain(current); 
     };     
 };
 
@@ -249,14 +242,27 @@ BtcRelaxApi.prototype.getOrderState = function(vOrder)
     		vOrder.set("Response",JSON.stringify(json));
                 var state =json.serverState;
                 var vInvoiceAddress=json.invoiceAddress;
-                vOrder.set("state",state);
+                if (vInvoiceAddress.length>0)
+               {
+                 vOrder.set("state",state);
                 vOrder.set("InvoiceAddress",vInvoiceAddress);
                 vOrder.set("Modified",moment().toDate());
-    };
+                this.queryChain(vOrder);
+ };
+};
 };
 
 BtcRelaxApi.prototype.queryChain = function(vOrder)
 {
+    
+        var vAddr=vOrder.field("InvoiceAddress"); 
+        if (vAddr.length>0) 
+        { 
+            log("Checking order:"+vOrder.field("OrderId"));
+	           var req="https://api.smartbit.com.au/v1/blockchain/address/"+vAddr+"?tx=0"; 
+            vOrder.set("ChainRequest",req); 
+            
+        };
     var vRequest = vOrder.field("ChainRequest");
     var result=http().get(vRequest);
     if(result.code===200) {
