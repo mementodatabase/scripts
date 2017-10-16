@@ -73,31 +73,44 @@ BtcRelaxApi.prototype.newEntry = function(vEntry)
     };		
 };
 
-BtcRelaxApi.prototype.setNewState=function(vPub,vNewState)
+BtcRelaxApi.prototype.setNewState=function(vPub,vNewState, vOrderId)
 {
 	switch(vNewState)
 	{ case 'Saled':
-	  vPub.set("FinishDate",moment().toDate());
-	  break;
+            vPub.set("FinishDate",moment().toDate());
+            vPub.set("OrderId", vOrderId);
+            break;
 	  case 'Rejected':
-	  vPub.set("FinishDate",moment().toDate());	
-		break;
-	   case 'Published':
-	   vPub.set("StartDate",moment().toDate());
-		break;
-         case 'PreOrdered':
-         message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
-              break;
+            vPub.set("FinishDate",moment().toDate());	
+            vPub.set("OrderId", null);
+            break;
+	  case 'Published':
+            vPub.set("StartDate",moment().toDate());
+            vPub.set("OrderId", null);
+          break;
+          case 'PreOrdered':
+            message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
+            vPub.set("OrderId", vOrderId);
+            break;
         case 'Preparing':
            message("Bookmark id:"+vPub.field("BookmarkId")+" need for revision!");
-	   break;
+	   vPub.set("OrderId", null);
+           break;
         case 'Lost':
            vPub.set("FinishDate",moment().toDate());
            message("Bookmark id:"+vPub.field("BookmarkId")+" was lost!");
 	   break;
+       case 'Finished':
+         vPub.set("FinishDate",moment().toDate());
+         vPub.set("OrderId", vOrderId);
+         break;
+       case 'Canceled':
+         vPub.set("FinishDate",moment().toDate());
+         vPub.set("OrderId", null);
+         break;
         default:
-   	 message("Bookmark id:"+vPub.field("BookmarkId")+" has unknown state:"+vNewState);
-		break;
+         message("Bookmark id:"+vPub.field("BookmarkId")+" has unknown state:"+vNewState);
+         break;
 	};
 	vPub.set("Status",vNewState);	
 };
@@ -216,7 +229,7 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
                 if (orderId>0)
                 {
                   log("OrderId:"+orderId);
-		              vPub.set("OrderId", orderId);
+		              
 		              var vOrder = this.getOrderById(orderId);
 		              if (vOrder!==undefined)
                   {
@@ -226,8 +239,8 @@ BtcRelaxApi.prototype.getPublicationState = function(vPub)
                 };
                 if (state !== oldState)
                 {
-                            	this.setNewState(vPub,state);
-				             message("BookmarkId:"+pointId+" changed!");  
+                            	this.setNewState(vPub,state, orderId);
+				message("BookmarkId:"+pointId+" changed!");  
                 };
     };
 };
