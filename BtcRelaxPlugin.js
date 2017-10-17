@@ -1,4 +1,4 @@
-/* global http */
+/* global http, moment */
 
 function BtcRelaxApi( v_server , v_tokenId, v_tokenKey, v_readOnly )
 {
