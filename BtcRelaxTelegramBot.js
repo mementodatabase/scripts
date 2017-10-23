@@ -50,6 +50,11 @@ if(result.code===200) {
 function processUpdateInfo(vEntry, vUpdateInfo)
 {
     var vUId = vUpdateInfo.update_id;
+    var vHLib = libByName("TelegramUpdates");
+    var vUInfo = new Object();
+    vUInfo["UpdateId"]=vUId;
+    var nUI=vHLib.create(vUInfo);
+    nUI.set("TelegramBot",vEntry);
     vEntry.set("UpdateId",vUId);
 };
 
