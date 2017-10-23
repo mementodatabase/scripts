@@ -52,6 +52,10 @@ function processUpdateInfo(vEntry, vUpdateInfo)
     var vUId = vUpdateInfo.update_id;
     var vHLib = libByName("TelegramUpdates");
     var vUInfo = new Object();
+    if (vUpdateInfo.message !== undefined) 
+    {
+     vUInfo["UpdateType"]="Message";
+    };
     vUInfo["UpdateId"]=vUId;
     var nUI=vHLib.create(vUInfo);
     nUI.set("TelegramBot",vEntry);
