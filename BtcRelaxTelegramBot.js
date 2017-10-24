@@ -85,6 +85,8 @@ function getUser(vUser)
     var nU = new Object();
     nU["UserId"]=vID;
     nU["UserName"]=vUser.username;
+    nU["FirstName"]=vUser.first_name;
+    nU["LastName"]=vUser.last_name;
     nU["isBot"]=vUser.is_bot;
     var nUE=vUL.create(nU);
     return nUE;
