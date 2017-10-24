@@ -56,16 +56,40 @@ function processUpdateInfo(vEntry, vUpdateInfo)
     {
      vUInfo["UpdateType"]="Message";
      var vM = vUpdateInfo.message;  
-     vUInfo["Text"]=vM.text;     
-     };
+     vUInfo["Text"]=vM.text;  
+     var vUF=vM.from;
+     var vUsr=getUser(vUF);
+     vUsr.set("TelegramBot",vEntry);
+    };
     vUInfo["UpdateId"]=vUId;
     var nUI=vHLib.create(vUInfo);
     nUI.set("TelegramBot",vEntry);
     var vRI=JSON.stringify(vUpdateInfo);
-    message(vRI);
     nUI.set("RawUpdateInfo",vRI);
     vEntry.set("UpdateId",vUId);
 };
+
+function getUser(vUser)
+{
+    var vUL=libByName("TelegramUsers");
+    var vID=vUser.id;
+    for (var UInfo in vUL)
+    {
+       var vU=vUL[UInfo];
+       if (vID==vU.id)
+       {
+          return(vU);
+       };
+    };
+    var nU = new Object();
+    nU["UserId"]=vID;
+    nU["UserName"]=vUser.username;
+    nU["isBot"]=vUser.is_bot;
+    var nUE=vUL.create(nU);
+    return nUE;
+};
+
+
 
 
 var vC=entry();
