@@ -72,12 +72,12 @@ function processUpdateInfo(vEntry, vUpdateInfo)
 function getUser(vUser)
 {
     var vUL=libByName("TelegramUsers");
-    var vID=vUser.UserId;
+    var vID=vUser.id;
     for (var UInfo in vUL)
     {
        var vU=vUL[UInfo];
        var cId=vU.UserId;
-       message(cId);
+       log("Exists user id:"+cId);
        if (vID===cId)
        {
           return vU;
