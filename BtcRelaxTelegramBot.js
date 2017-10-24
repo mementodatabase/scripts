@@ -80,7 +80,8 @@ function getUser(vUser)
        message(cId);
        if (vID===cId)
        {
-          return(vU);
+          return vU;
+          break;
        };
     };
     var nU = new Object();
