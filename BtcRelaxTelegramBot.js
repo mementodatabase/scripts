@@ -73,7 +73,9 @@ function getUser(vUser)
 {
     var vUL=libByName("TelegramUsers");
     var vID=vUser.id;
-    for (var UInfo in vUL)
+    log("Getting user id:"+vID);
+    var isUserExists=false;
+    for (var UInfo in vUL)
     {
        var vU=vUL[UInfo];
        var cId=vU.UserId;
@@ -81,17 +83,21 @@ function getUser(vUser)
        if (vID===cId)
        {
           return vU;
+          isUserExists=true;
           break;
        };
     };
-    var nU = new Object();
-    nU["UserId"]=vID;
-    nU["UserName"]=vUser.username;
-    nU["FirstName"]=vUser.first_name;
-    nU["LastName"]=vUser.last_name;
-    nU["isBot"]=vUser.is_bot;
-    var nUE=vUL.create(nU);
-    return nUE;
+    if (!isUserExists)
+    {
+     var nU = new Object();
+     nU["UserId"]=vID;
+     nU["UserName"]=vUser.username;
+     nU["FirstName"]=vUser.first_name;
+     nU["LastName"]=vUser.last_name;
+     nU["isBot"]=vUser.is_bot;
+     var nUE=vUL.create(nU);
+     return nUE;
+    };
 };
 
 
