@@ -73,9 +73,9 @@ function getUser(vUser)
 {
     var vUL=libByName("TelegramUsers");
     var vID=vUser.id;
-    log("Getting user id:"+vID);
+    var vULE=vUL.entries();
     var isUserExists=false;
-    for (i=0;i<vUL.length;i++)
+    for (i=0;i<vULE.length;i++)
     {
        var vU=vUL[i];
        var cId=vU.UserId;
