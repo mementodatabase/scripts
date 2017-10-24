@@ -75,9 +75,9 @@ function getUser(vUser)
     var vID=vUser.id;
     log("Getting user id:"+vID);
     var isUserExists=false;
-    for (var UInfo in vUL)
+    for (i=0;i<vUL.length;i++)
     {
-       var vU=vUL[UInfo];
+       var vU=vUL[i];
        var cId=vU.UserId;
        log("Exists user id:"+cId);
        if (vID===cId)
