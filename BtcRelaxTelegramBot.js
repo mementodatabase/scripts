@@ -76,8 +76,10 @@ function getUser(vUser)
     for (var UInfo in vUL)
     {
        var vU=vUL[UInfo];
-       if (vID==vU.id)
+       var cId=vU.id;
+       if (vID===cId)
        {
+          message(vID);
           return(vU);
        };
     };
