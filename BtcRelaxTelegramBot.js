@@ -61,7 +61,9 @@ function processUpdateInfo(vEntry, vUpdateInfo)
     vUInfo["UpdateId"]=vUId;
     var nUI=vHLib.create(vUInfo);
     nUI.set("TelegramBot",vEntry);
-    var vRI=JSON.stringify(vUpdateInfo);     nUI.set("RawUpdateInfo",vRI);
+    var vRI=JSON.stringify(vUpdateInfo);
+    message(vRI);
+    nUI.set("RawUpdateInfo",vRI);
     vEntry.set("UpdateId",vUId);
 };
 
