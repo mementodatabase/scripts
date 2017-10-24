@@ -55,11 +55,14 @@ function processUpdateInfo(vEntry, vUpdateInfo)
     if (vUpdateInfo.message !== undefined) 
     {
      vUInfo["UpdateType"]="Message";
-    };
+     var vM = vUpdateInfo.message;  
+     vUInfo["Text"]=vM.text;     
+     };
     vUInfo["UpdateId"]=vUId;
     var nUI=vHLib.create(vUInfo);
     nUI.set("TelegramBot",vEntry);
-    vEntry.set("UpdateId",vUId);
+    var vRI=JSON.stringify(vUpdateInfo);     nUI.set("RawUpdateInfo",vRI);
+    vEntry.set("UpdateId",vUId);
 };
 
 
