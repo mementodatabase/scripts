@@ -62,6 +62,7 @@ function processUpdateInfo(vEntry, vUpdateInfo)
      vUsr.set("TelegramBot",vEntry);
      var vCO=vM.chat;
      var vC=getChat(vCO);
+     vC.set("Users",vUsr);
      vC.set("TelegramBot",vEntry);
     };
     vUInfo["UpdateId"]=vUId;
