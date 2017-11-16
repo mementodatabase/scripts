@@ -1,0 +1,1 @@
+refreshAllOrders('https://ua.bitganj.website');
