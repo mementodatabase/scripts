@@ -17,11 +17,17 @@ function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
     }else {this.orderLib = orderLib;};
   };
 }
+
 BitGanjApi.prototype.validate = function(pEntry) {
   var vRes = true;
   var curInBox = pEntry.field("inBox");
   var vAdvertiseTitle;
   var vTotalPrice = 0;
+  var vBookmarkId = pEntry.field("BookmarkId");
+  if (vBookmarkId>0)
+    {
+      pEntry.set("State",'Prepared');
+    };
   for (var i2 = 0; i2 < curInBox.length; i2++) {
     var linkedEntry = curInBox[i2];
     if (i2 === 0) {
@@ -31,6 +37,7 @@ BitGanjApi.prototype.validate = function(pEntry) {
     };
     vTotalPrice = vTotalPrice + linkedEntry.field("DefaultPrice");
   };
+
   pEntry.set("FrontTitle", vAdvertiseTitle);
   var loc = pEntry.field("Loc");
   var nLat = Math.round(loc.lat * 1000000) / 1000000;
@@ -38,6 +45,7 @@ BitGanjApi.prototype.validate = function(pEntry) {
   pEntry.set("TotalPrice", vTotalPrice);
   pEntry.set("Latitude", nLat);
   pEntry.set("Longitude", nLng);
+
   var urlToPic = pEntry.field("PublicURL");
   if (urlToPic === '') {
     vRes = "Url for name:" + AdvertiseTitle + " and total price:" + vTotalPrice + " not found";
@@ -60,6 +68,9 @@ BitGanjApi.prototype.validate = function(pEntry) {
   };
   return vRes;
 }
+
+
+
 BitGanjApi.prototype.getRegionPath = function(entry) {
   var res;
   res = entry.field("TitleRu");
@@ -69,6 +80,7 @@ BitGanjApi.prototype.getRegionPath = function(entry) {
   };
   return res;
 };
+
 BitGanjApi.prototype.newEntry = function(vEntry) {
   var res = true;
   var msg = vEntry.field("ServerRequest");
@@ -78,6 +90,7 @@ BitGanjApi.prototype.newEntry = function(vEntry) {
   if (result.code == 200) {
     var json = JSON.parse(result.body);
     vEntry.set("ServerResponse", JSON.stringify(json));
+    vEntry.set("CallDate",moment().toDate());
     var rcode = json.code;
     if (rcode === 0) {
       var pointId = json.bookmarkId;
@@ -93,6 +106,7 @@ BitGanjApi.prototype.newEntry = function(vEntry) {
   };
   return res;
 };
+
 BitGanjApi.prototype.newPublication = function(vEntry) {
   var res = true;
   var vPointId=vEntry.field("BookmarkId"); 
@@ -111,6 +125,7 @@ BitGanjApi.prototype.newPublication = function(vEntry) {
     pub.set("RegionInfo", vEntry.field("Region"));
   };
 };
+
 function syncAll(vServer, vTokenId, vTokenKey) {
   var vCl = lib();
   var vEa = vCl.entries();
@@ -121,15 +136,24 @@ function syncAll(vServer, vTokenId, vTokenKey) {
     var vMsg = "Processed:" + (i + 1) + " of " + vEcount + " items";
   };
 };
+
 function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
   var bga = new BitGanjApi(vServer, vTokenId, vTokenKey);
   var vVR = bga.validate(vEntry);
+  var vState=vEntry.field("State"); 
   if (vVR !== true) {
     message(vVR);
   } else {
-      var vNP = bga.newEntry(vEntry);
+      if (vState==='Created')
+      { 
+        var vNP = bga.newEntry(vEntry);
+        if (vNP===true)
+{ vEntry.set("State",'Prepared');};
+      };
     };
 };
+
+
 var vTokenId = arg("TokenId");
 var vTokenKey = arg("TokenKey");
 var vEntry=entry();
