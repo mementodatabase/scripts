@@ -8,13 +8,14 @@ function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
     message('You need to download FrontShop library!');
     exit();
   } else {
-    this.frontLib = pubLib;
+    this.Pubs = new BitGanjPubs(pubLib,this.gate);
     var orderLib=libByName("OrdersInfo");
     if (orderLib===null)
     { 
       message('You need to download OrdersInfo library!');
       exit();
-    }else {this.orderLib = orderLib;};
+    }else {
+    this.Orders= new BitGanjOrders(orderLib,this.gate);};
   };
   } else 
   {
