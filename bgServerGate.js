@@ -1,21 +1,29 @@
-function syncAll(vToken) 
-{ 
-   var vCl=lib();
-   var vEa=vCl.entries();
-   var vEcount=vEa.length;
-   for(var i=0; i<vEcount; ++i)
-     {
-	    var vCe=vEa[i];
-     syncCurrent(vCe);
-     var vMsg="Processed:"+(i+1)+" of "+ vEcount +" items";
-     };
-};
- 
-function syncCurrent(vEntry, vToken) 
-{
-    var vVR =validate(vEntry);
-    
-};
+/* global http, moment */
+function BitGanjGate(v_server, v_tokenId, v_tokenKey) {
+  this.server = v_server;
+  this.tokenId = v_tokenId;
+  this.tokenKey = v_tokenKey;
+}
 
-var vToken=arg("Token");
-syncAll(vToken);
+BitGanjGate.prototype.call = function(vEntry, vService) {
+  var res = true;
+  var msg = vEntry.field("ServerRequest");
+  var callUrl = this.server + "/" + vService + '?tokenId=' + this.tokenId + '&tokenKey=' + this.tokenKey + '&action=';
+  log("Calling URL:" + callUrl + msg);
+  var result = http().get(callUrl + encodeURIComponent(msg));
+  if (result.code == 200) {
+    var json = JSON.parse(result.body);
+    vEntry.set("ServerResponse", JSON.stringify(json));
+    vEntry.set("CallDate",moment().toDate());
+    var rcode = json.code;
+    if (rcode === 0) {
+    	res = true;  
+    } else {
+        res = false;
+      };
+    } else {
+      res = json.message;
+    };
+  };
+  return res;
+};
