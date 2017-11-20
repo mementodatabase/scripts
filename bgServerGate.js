@@ -21,9 +21,6 @@ BitGanjGate.prototype.call = function(vEntry, vService) {
     } else {
         res = false;
       };
-    } else {
-      res = json.message;
-    };
   };
   return res;
 };
