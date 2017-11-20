@@ -23,4 +23,4 @@ BitGanjGate.prototype.call = function(vEntry, vService) {
       };
   };
   return res;
-};
+}
