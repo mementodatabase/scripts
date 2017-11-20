@@ -1,8 +1,8 @@
 /* global http, moment */
 function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
-  this.server = v_server;
-  this.tokenId = v_tokenId;
-  this.tokenKey = v_tokenKey;
+  this.gate = new BitGanjGate(v_server, v_tokenId, v_tokenKey);
+  if (this.gate!== undefined)
+  {
   var pubLib = libByName("FrontShop");
   if (pubLib === null) {
     message('You need to download FrontShop library!');
@@ -15,6 +15,11 @@ function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
       message('You need to download OrdersInfo library!');
       exit();
     }else {this.orderLib = orderLib;};
+  };
+  } else 
+  {
+      message('You need add library bgServerGate.js!');
+      exit();
   };
 }
 
