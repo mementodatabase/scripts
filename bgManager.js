@@ -150,12 +150,13 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
   if (vVR !== true) {
     message(vVR);
   } else {
-      if (vState==='Created')
-      { 
-        var vNP = bga.newEntry(vEntry);
-        if (vNP===true)
-{ vEntry.set("State",'Prepared');};
-      };
+      var vPub=bra.Pubs.getPub(vEntry);
+      if (vPub!==false)
+       {
+         var vRefreshRes=bra.Pubs.refresh(vPub) 
+         
+      
+       };
     };
 };
 
