@@ -154,7 +154,7 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
       var vPub=bga.Pubs.getPub(vEntry);
       if (vPub!==false)
        {
-         var vRefreshRes=bra.Pubs.refresh(vPub) 
+         var vRefreshRes=bga.Pubs.refresh(vPub) 
          
       
        };
