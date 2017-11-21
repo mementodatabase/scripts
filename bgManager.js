@@ -164,5 +164,5 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
 
 var vTokenId = arg("TokenId");
 var vTokenKey = arg("TokenKey");
-var vEntry=entry();
-syncCurrent("https://ua.bitganj.website", vTokenId, vTokenKey,vEntry);
+//var vEntry=entry();
+//syncCurrent("https://ua.bitganj.website", vTokenId, vTokenKey,vEntry);
