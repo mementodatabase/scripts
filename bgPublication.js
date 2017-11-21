@@ -9,7 +9,7 @@ function BitGanjPubs(v_lib, v_gate) {
   var vPointId=vEntry.field("BookmarkId");
   vat vFlib=this.lib;
   var vCPub=vFlib.findByKey(vPointId);
-  if (vCPub===null)
+  if (vCPub===null && vPointId>0)
   {
 var newPub=new Object();
 newPub["BookmarkId"]=vPointId;
@@ -20,7 +20,16 @@ pub.set("Location",vEntry.field("Loc"));
 pub.set("Price",vEntry.field("TotalPrice"));
 vEntry.set("PublicationEntry",pub);
 pub.set("RegionInfo",vEntry.field("Region"));
-    res=pub;
+  var vRequest='{"type":"GetPointState","bookmaarkId":"' + vPointId + '"}';
+  pub.set("ServerRequest",vRequest);
+  res=pub;
   } else { res=vCPub; };
   return res;
-}
+};
+
+BitGanjPubs.prototype.refresh = function(vPub) {
+  var res=false;
+  var vGate=this.gate;
+  res=vGate.call(vPub,'PointsApi.php');  
+  return res;
+};
