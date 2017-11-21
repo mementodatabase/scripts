@@ -1,13 +1,13 @@
 /* global http, moment */
 function BitGanjPubs(v_lib, v_gate) {
   this.gate = v_gate;
-  this.lib = v_lib;
+  this.clib = v_lib;
  }
  
  BitGanjPubs.prototype.getPub = function(vEntry) {
   var res=false;
   var vPointId=vEntry.field("BookmarkId");
-  var vFlib=this.lib;
+  var vFlib=this.clib;
   var vCPub=vFlib.findByKey(vPointId);
   if (vCPub===null && vPointId>0)
   {
