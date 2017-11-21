@@ -20,8 +20,6 @@ pub.set("Location",vEntry.field("Loc"));
 pub.set("Price",vEntry.field("TotalPrice"));
 vEntry.set("PublicationEntry",pub);
 pub.set("RegionInfo",vEntry.field("Region"));
-  var vRequest='{"type":"GetPointState","bookmaarkId":"' + vPointId + '"}';
-  pub.set("ServerRequest",vRequest);
   res=pub;
   } else { res=vCPub; };
   return res;
