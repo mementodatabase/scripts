@@ -3,6 +3,7 @@ function BitGanjValidator (vEntry) {
   this.cEntry = vEntry;
   this.isValid = false;
   this.ValidationError = '';
+  this.validate(vEntry);
 }
 
 BitGanjValidator.prototype.validate = function() {
