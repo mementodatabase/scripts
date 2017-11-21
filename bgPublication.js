@@ -7,7 +7,7 @@ function BitGanjPubs(v_lib, v_gate) {
  BitGanjPubs.prototype.getPub = function(vEntry) {
   var res=false;
   var vPointId=vEntry.field("BookmarkId");
-  vat vFlib=this.lib;
+  var vFlib=this.lib;
   var vCPub=vFlib.findByKey(vPointId);
   if (vCPub===null && vPointId>0)
   {
