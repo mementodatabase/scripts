@@ -25,7 +25,7 @@ function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
 }
 
 BitGanjApi.prototype.validate = function(pEntry) {
-  var vRes = true;
+  var vRes = false;
   var curInBox = pEntry.field("inBox");
   var vAdvertiseTitle;
   var vTotalPrice = 0;
@@ -67,6 +67,7 @@ BitGanjApi.prototype.validate = function(pEntry) {
       if (vRegion !== null) {
         nCmd = '{"type":"AddPoint","inf":{"lat":"' + nLat + '","lng":"' + nLng + '","link":"' + urlToPic + '","advName":"' + vAdvertiseTitle + '","price":"' + vTotalPrice + '","region":"' + vRegion + '","descr":"' + vDescr + '"}}';
         pEntry.set("ServerRequest", nCmd);
+        vRes=true;
       } else {
         vRes = "Region name error";
       };
