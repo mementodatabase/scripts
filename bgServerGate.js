@@ -8,6 +8,10 @@ function BitGanjGate(v_server, v_tokenId, v_tokenKey) {
 BitGanjGate.prototype.call = function(vEntry, vService) {
   var res = true;
   var msg = vEntry.field("ServerRequest");
+  if (msg=='')
+    {
+     msg=vEntry.field("AutoRequest");
+     };
   var callUrl = this.server + "/" + vService + '?tokenId=' + this.tokenId + '&tokenKey=' + this.tokenKey + '&action=';
   log("Calling URL:" + callUrl + msg);
   var result = http().get(callUrl + encodeURIComponent(msg));
