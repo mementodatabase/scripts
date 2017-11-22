@@ -63,6 +63,8 @@ BitGanjValidator.prototype.validate = function() {
      this.isValid =false;
   }; 
 };
+  log(this.msg);
+   
 };
 
 
