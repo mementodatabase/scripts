@@ -2,7 +2,7 @@
 function BitGanjValidator (vEntry) {
   this.cEntry = vEntry;
   this.isValid = false;
-  this.ValidationError = '';
+  this.msg = '';
   this.validate();
 }
 
@@ -50,7 +50,7 @@ BitGanjValidator.prototype.validate = function() {
                       if (vRegion !== null) {
                           nCmd = '{"type":"AddPoint","inf":{"lat":"' + nLat + '","lng":"' + nLng + '","link":"' + urlToPic + '","advName":"' + vAdvertiseTitle + '","price":"' + vTotalPrice + '","region":"' + vRegion + '","descr":"' + vDescr + '"}}';
                          this.cEntry.set("ServerRequest", nCmd);
-                         this.ValidationError = '';
+                         this.msg = '';
                          this.isValid =true;
                     } else {
                       this.ValidationError = "Ошибка определения региона!";
@@ -59,7 +59,7 @@ BitGanjValidator.prototype.validate = function() {
                 }; };
   } else
   {
-     this.ValidationError = "Некорректно заданы координаты!";
+     this.msg = "Некорректно заданы координаты!";
      this.isValid =false;
   };
 };

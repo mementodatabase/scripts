@@ -146,10 +146,11 @@ function syncAll(vServer, vTokenId, vTokenKey) {
 
 function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
   var bga = new BitGanjApi(vServer, vTokenId, vTokenKey);
-  var vVR = bga.validate(vEntry);
-  var vState=vEntry.field("State"); 
-  if (vVR !== true) {
-    message(vVR);
+  var bgv = new BitGanjValidator(vEntry); 
+  vEntry.set("isValid",bgv.isValid);   
+  if (bgv.isValid !== true) {
+    vEntry.set("ValidationMessage",bgv.msg);
+    message(bgv.msg );
   } else {
       var vPub=bga.Pubs.getPub(vEntry);
       if (vPub!==false)
