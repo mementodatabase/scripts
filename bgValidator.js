@@ -13,9 +13,7 @@ BitGanjValidator.prototype.validate = function() {
   var vTotalPrice = 0;
   var vBookmarkId = this.cEntry.field("BookmarkId");
   if (vBookmarkId>0)
-    {
-      pEntry.set("State",'Prepared');
-    };
+  {
   for (var i2 = 0; i2 < curInBox.length; i2++) {
     var linkedEntry = curInBox[i2];
     if (i2 === 0) {
@@ -64,7 +62,8 @@ BitGanjValidator.prototype.validate = function() {
      this.ValidationError = "Некорректно заданы координаты!";
      this.isValid =false;
   };
-}
+};
+};
 
 
 
