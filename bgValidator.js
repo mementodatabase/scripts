@@ -36,7 +36,7 @@ BitGanjValidator.prototype.validate = function() {
 
        var urlToPic =  this.cEntry.field("PublicURL");
        if (urlToPic === '') {
-             this.ValidationError = "Отсутствует ссылка на фотографии";
+             this.msg = "Отсутствует ссылка на фотографии";
              this.isValid =false;
       } else {
                 var nCmd = null;
@@ -53,7 +53,7 @@ BitGanjValidator.prototype.validate = function() {
                          this.msg = '';
                          this.isValid =true;
                     } else {
-                      this.ValidationError = "Ошибка определения региона!";
+                      this.msg = "Ошибка определения региона!";
                       this.isValid =false;
                            };
                 }; };
@@ -61,7 +61,7 @@ BitGanjValidator.prototype.validate = function() {
   {
      this.msg = "Некорректно заданы координаты!";
      this.isValid =false;
-  };
+  }; 
 };
 };
 
