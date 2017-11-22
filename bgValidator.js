@@ -58,7 +58,7 @@ BitGanjValidator.prototype.validate = function() {
                       this.ValidationError = "Ошибка определения региона!";
                       this.isValid =false;
                            };
-                };
+                }; };
   } else
   {
      this.ValidationError = "Некорректно заданы координаты!";
