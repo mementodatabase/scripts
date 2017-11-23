@@ -39,45 +39,51 @@ BitGanjPubs.prototype.refresh = function(vPub) {
 BitGanjPubs.prototype.UpdateState = function(vPub) {
   var res=false;
   var json = JSON.parse();
-  var state =json.serverState;
-  switch(state)
-	{ 
-    case 'Saled':
+  var vOldState=vPub.field("Status");
+  var vState =json.serverState;
+  if (vOldState!==vState)
+  {
+     log('New status:'+vState);
+     switch(vState)
+	    { 
+      case 'Saled':
             vPub.set("FinishDate",moment().toDate());
             vPub.set("OrderId", vOrderId);
             break;
-	  case 'Rejected':
+	     case 'Rejected':
             vPub.set("FinishDate",moment().toDate());	
             vPub.set("OrderId", null);
             break;
-	  case 'Published':
+	     case 'Published':
             vPub.set("StartDate",moment().toDate());
             vPub.set("OrderId", null);
-          break;
-          case 'PreOrdered':
-            message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
-            vPub.set("OrderId", vOrderId);
             break;
-        case 'Preparing':
-           message("Bookmark id:"+vPub.field("BookmarkId")+" need for revision!");
-	   vPub.set("OrderId", null);
+      case 'PreOrdered':
+           message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
+           vPub.set("OrderId", vOrderId);
            break;
-        case 'Lost':
+      case 'Preparing':
+           message("Bookmark id:"+vPub.field("BookmarkId")+" need for revision!");
+	         vPub.set("OrderId", null);
+           break;
+      case 'Lost':
            vPub.set("FinishDate",moment().toDate());
            message("Bookmark id:"+vPub.field("BookmarkId")+" was lost!");
-	   break;
-       case 'Finished':
-         vPub.set("FinishDate",moment().toDate());
-         vPub.set("OrderId", vOrderId);
-         break;
-       case 'Canceled':
-         vPub.set("FinishDate",moment().toDate());
-         vPub.set("OrderId", null);
-         break;
-        default:
+	          break;
+      case 'Finished':
+           vPub.set("FinishDate",moment().toDate());
+           vPub.set("OrderId", vOrderId);
+           break;
+      case 'Canceled':
+           vPub.set("FinishDate",moment().toDate());
+           vPub.set("OrderId", null);
+           break;
+      default:
          message("Bookmark id:"+vPub.field("BookmarkId")+" has unknown state:"+vNewState);
          break;
-	};
-  vPub.set("Status",vNewState); 
+	     };
+    vPub.set("Status",vState); 
+    res=true;
+  };
   return res;
 };
