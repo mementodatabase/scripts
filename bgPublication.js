@@ -38,7 +38,7 @@ BitGanjPubs.prototype.refresh = function(vPub) {
 
 BitGanjPubs.prototype.UpdateState = function(vPub) {
   var res=false;
-  var json = JSON.parse();
+  var json = JSON.parse(vPub.field("ServerResponse"));
   var vOldState=vPub.field("Status");
   var vState =json.serverState;
   if (vOldState!==vState)
@@ -79,7 +79,7 @@ BitGanjPubs.prototype.UpdateState = function(vPub) {
            vPub.set("OrderId", null);
            break;
       default:
-         message("Bookmark id:"+vPub.field("BookmarkId")+" has unknown state:"+vNewState);
+         message("Bookmark id:"+vPub.field("BookmarkId")+" has unknown state:"+vState);
          break;
 	     };
     vPub.set("Status",vState); 
