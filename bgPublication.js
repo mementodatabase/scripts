@@ -31,7 +31,7 @@ BitGanjPubs.prototype.refresh = function(vPub) {
   res=vGate.call(vPub,'PointsApi.php');  
   if (res===true)
    {
-     this.UpdateState(vPub);
+     res=this.UpdateState(vPub);
    };
   return res;
 };
@@ -48,7 +48,7 @@ BitGanjPubs.prototype.UpdateState = function(vPub) {
 	    { 
       case 'Saled':
             vPub.set("FinishDate",moment().toDate());
-            vPub.set("OrderId", vOrderId);
+            vPub.set("OrderId", json.OrderId);
             break;
 	     case 'Rejected':
             vPub.set("FinishDate",moment().toDate());	
@@ -59,23 +59,23 @@ BitGanjPubs.prototype.UpdateState = function(vPub) {
             vPub.set("OrderId", null);
             break;
       case 'PreOrdered':
-           message("Bookmark id:"+vPub.field("BookmarkId")+" was preordered");
-           vPub.set("OrderId", vOrderId);
+           vPub.set("OrderId", json.OrderId);
            break;
       case 'Preparing':
-           message("Bookmark id:"+vPub.field("BookmarkId")+" need for revision!");
-	         vPub.set("OrderId", null);
+ 	          vPub.set("OrderId", null);
            break;
       case 'Lost':
            vPub.set("FinishDate",moment().toDate());
-           message("Bookmark id:"+vPub.field("BookmarkId")+" was lost!");
 	          break;
       case 'Finished':
            vPub.set("FinishDate",moment().toDate());
-           vPub.set("OrderId", vOrderId);
+           vPub.set("OrderId", json.OrderId);
            break;
       case 'Canceled':
            vPub.set("FinishDate",moment().toDate());
+           vPub.set("OrderId", null);
+           break;
+      case 'Checking':
            vPub.set("OrderId", null);
            break;
       default:
