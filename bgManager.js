@@ -159,7 +159,11 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
        {
          var vRefreshRes=bga.Pubs.refresh(vPub) 
          vEntry.set("State",vPub.field("Status"));
-      
+         var vOrderId = vEntry.field("OrderId");
+         if (vOrderId>0)
+         {
+           var vOrder=bga.Orders.getOrder(vEntry);
+         };
        };
     };
 };
