@@ -7,16 +7,17 @@ function BitGanjOrders(v_lib, v_gate) {
 BitGanjOrders.prototype.getOrder = function(vEntry) {
   var res=false;
   var vOrderId=vEntry.field("OrderId");
+  log("Searching for order id:"+vOrderId);
   var vFlib=this.clib;
-  var vCPub=vFlib.findByKey(vOrderId);
-  if (vCPub===null && vOrderId>0)
+  var vCOrder=vFlib.findByKey(vOrderId);
+  if (vCOrder===null && vOrderId>0)
   {
     var newOrder=new Object();
     newOrder["OrderId"]=vOrderId;
-    var order=vFlib.create(newOrder);
-    order.set("PublicationEntry",vEntry);
-    res=order;
-  } else { res=vCPub; };
+    var nOrder=vFlib.create(newOrder);
+    nOrder.set("PublicationEntry",vEntry);
+    res=nOrder;
+  } else { res=vCOrder; };
   return res;
 };
 
