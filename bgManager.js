@@ -53,6 +53,7 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
          {
            log("Try to get and refreh order Id:"+vOrderId);
            var vOrder=bga.Orders.getOrder(vPub);
+           vEntry.set("OrdersInfo",vOrder);
            var refResult=bga.Orders.refresh(vOrder);
          };
        };
