@@ -162,7 +162,7 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
          var vOrderId = vEntry.field("OrderId");
          if (vOrderId>0)
          {
-           var vOrder=bga.Orders.getOrder(vEntry);
+           var vOrder=bga.Orders.getOrder(vPub);
          };
        };
     };
