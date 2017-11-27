@@ -24,7 +24,7 @@ function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
   };
 }
 
-BitGanjApi.prototype.validate = function(pEntry) {
+/*BitGanjApi.prototype.validate = function(pEntry) {
   var vRes = false;
   var curInBox = pEntry.field("inBox");
   var vAdvertiseTitle;
@@ -88,6 +88,7 @@ BitGanjApi.prototype.getRegionPath = function(entry) {
   return res;
 };
 
+
 BitGanjApi.prototype.newEntry = function(vEntry) {
   var res = true;
   var msg = vEntry.field("ServerRequest");
@@ -132,6 +133,7 @@ BitGanjApi.prototype.newPublication = function(vEntry) {
     pub.set("RegionInfo", vEntry.field("Region"));
   };
 };
+*/
 
 function syncAll(vServer, vTokenId, vTokenKey) {
   var vCl = lib();
@@ -156,7 +158,7 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
       if (vPub!==false)
        {
          var vRefreshRes=bga.Pubs.refresh(vPub) 
-         
+         vEntry.set("State",vPub.field("Status"));
       
        };
     };
