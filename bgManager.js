@@ -46,7 +46,7 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
       var vPub=bga.Pubs.getPub(vEntry);
       if (vPub!==false)
        {
-         var vRefreshRes=bga.Pubs.refresh(vPub) 
+         var vRefreshRes=bga.Pubs.refresh(vPub); 
          vEntry.set("State",vPub.field("Status"));
          var vOrderId = vEntry.field("OrderId");
          if (vOrderId>0)
