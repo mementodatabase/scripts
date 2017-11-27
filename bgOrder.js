@@ -24,9 +24,35 @@ BitGanjOrders.prototype.refresh = function(vOrder) {
   var res=false;
   var vGate=this.gate;
   res=vGate.call(vOrder,'OrdersApi.php');  
-  if (res===true)
-   {
-     ///res=this.UpdateState(vPub);
-   };
+  return res;
+};
+
+BitGanjOrders.prototype.UpdateState = function(vOrder) {
+  var res=false;
+  var json = JSON.parse(vOrder.field("ServerResponse"));
+  var vOldState=vPub.field("State");
+  var vState =json.serverState;
+  if (vOldState!==vState)
+  {
+     log('New status:'+vState+ ' for order id:'+vOrder.field("OrderId"));
+     switch(vState)
+	    { 
+      case 'Canceled':
+            vPub.set("FinishDate",moment().toDate());
+            break;
+	     case 'Finished':
+            vPub.set("FinishDate",moment().toDate());	
+            break;
+	     case 'Paid':
+            break;
+       case 'WaitForPayment':
+            break;
+      default:
+         message("Order id:"+vOrder.field("OrderId")+" has unknown state:"+vState);
+         break;
+	     };
+    vPub.set("State",vState); 
+    res=true;
+  };
   return res;
 };
