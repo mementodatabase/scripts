@@ -19,3 +19,14 @@ BitGanjOrders.prototype.getOrder = function(vEntry) {
   } else { res=vCPub; };
   return res;
 };
+
+BitGanjOrders.prototype.refresh = function(vOrder) {
+  var res=false;
+  var vGate=this.gate;
+  res=vGate.call(vOrder,'OrdersApi.php');  
+  if (res===true)
+   {
+     ///res=this.UpdateState(vPub);
+   };
+  return res;
+};
