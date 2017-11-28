@@ -56,7 +56,20 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
            vEntry.set("OrdersInfo",vOrder);
            var refResult=bga.Orders.refresh(vOrder);
          };
-       };
+       } else
+       {
+          var vGate=this.gate;
+          res=vGate.call(vEntry,'PointsApi.php');
+          if (res===true)
+          {
+            var json = JSON.parse(vEntry.field("ServerResponse"));
+            var pointId = json.bookmarkId;
+            if (pointId>0)
+            {
+                vEntry.set("BookmarkId",pointId);
+            };
+          };
+       };    
     };
 };
 
