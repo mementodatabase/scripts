@@ -1,18 +1,20 @@
 /* global http, moment */
-function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
+function BitGanjApi(v_server, v_tokenId, v_tokenKey, vForntShopLibName, vOrdersLibName) {
+  this.ForntShopLibName = vForntShopLibName;
+  this.OrdersLibName = vOrdersLibName;
   this.gate = new BitGanjGate(v_server, v_tokenId, v_tokenKey);
   if (this.gate!== undefined)
   {
-  var pubLib = libByName("FrontShopInfo");
+  var pubLib = libByName(this.ForntShopLibName);
   if (pubLib === null) {
-    message('You need to download FrontShop library!');
+    message('You need to download '+this.ForntShopLibName+' library!');
     exit();
   } else {
     this.Pubs = new BitGanjPubs(pubLib,this.gate);
-    var orderLib=libByName("OrdersInfo");
+    var orderLib=libByName(this.OrdersLibName);
     if (orderLib===null)
     { 
-      message('You need to download OrdersInfo library!');
+      message('You need to download'+this.OrdersLibName+' library!');
       exit();
     }else {
     this.Orders= new BitGanjOrders(orderLib,this.gate);};
