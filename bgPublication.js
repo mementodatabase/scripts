@@ -16,7 +16,7 @@ function BitGanjPubs(v_lib, v_gate) {
 		newPub["BookmarkId"]=vPointId;
 		newPub["FrontShopTitle"]=vEntry.field("FrontTitle");
 		newPub["Photos"]=vEntry.field("PublicURL");
-   var pub=vFlib.create(newPub);
+   var pub=this.clib.create(newPub);
 		pub.set("Location",vEntry.field("Loc"));
 		pub.set("Price",vEntry.field("TotalPrice"));
 		vEntry.set("PublicationEntry",pub);
