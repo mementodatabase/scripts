@@ -7,21 +7,24 @@ function BitGanjPubs(v_lib, v_gate) {
  BitGanjPubs.prototype.getPub = function(vEntry) {
   var res=false;
   var vPointId=vEntry.field("BookmarkId");
-  var vFlib=this.clib;
-  var vCPub=vFlib.findByKey(vPointId);
-  if (vCPub===null && vPointId>0)
+  if (vPointId>0)
   {
-var newPub=new Object();
-newPub["BookmarkId"]=vPointId;
-newPub["FrontShopTitle"]=vEntry.field("FrontTitle");
-newPub["Photos"]=vEntry.field("PublicURL");
-var pub=vFlib.create(newPub);
-pub.set("Location",vEntry.field("Loc"));
-pub.set("Price",vEntry.field("TotalPrice"));
-vEntry.set("PublicationEntry",pub);
-pub.set("RegionInfo",vEntry.field("Region"));
-  res=pub;
-  } else { res=vCPub; };
+	 var vFlib=this.clib;
+  	var vCPub=vFlib.findByKey(vPointId);
+  	if (vCPub===null && vPointId>0)
+  	{
+		var newPub=new Object();
+		newPub["BookmarkId"]=vPointId;
+		newPub["FrontShopTitle"]=vEntry.field("FrontTitle");
+		newPub["Photos"]=vEntry.field("PublicURL");
+		var pub=vFlib.create(newPub);
+		pub.set("Location",vEntry.field("Loc"));
+		pub.set("Price",vEntry.field("TotalPrice"));
+		vEntry.set("PublicationEntry",pub);
+		pub.set("RegionInfo",vEntry.field("Region"));
+  		res=pub;
+  	} else { res=vCPub; };
+  };
   return res;
 };
 
@@ -62,11 +65,11 @@ BitGanjPubs.prototype.UpdateState = function(vPub) {
            vPub.set("OrderId", json.OrderId);
            break;
       case 'Preparing':
- 	          vPub.set("OrderId", null);
+ 	   vPub.set("OrderId", null);
            break;
       case 'Lost':
            vPub.set("FinishDate",moment().toDate());
-	          break;
+	   break;
       case 'Finished':
            vPub.set("FinishDate",moment().toDate());
            vPub.set("OrderId", json.OrderId);
