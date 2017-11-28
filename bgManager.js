@@ -26,19 +26,19 @@ function BitGanjApi(v_server, v_tokenId, v_tokenKey, vForntShopLibName, vOrdersL
   };
 }
 
-function syncAll(vServer, vTokenId, vTokenKey) {
+function syncAll(vServer, vTokenId, vTokenKey, vForntShopLibName, vOrdersLibName) {
   var vCl = lib();
   var vEa = vCl.entries();
   var vEcount = vEa.length;
   for (var i = 0; i < vEcount; i++) {
     var vCe = vEa[i];
-    syncCurrent(vServer, vTokenId, vTokenKey, vCe);
+    syncCurrent(vServer, vTokenId, vTokenKey, vCe, vForntShopLibName, vOrdersLibName);
     var vMsg = "Processed:" + (i + 1) + " of " + vEcount + " items";
   };
 };
 
-function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
-  var bga = new BitGanjApi(vServer, vTokenId, vTokenKey);
+function syncCurrent(vServer, vTokenId, vTokenKey, vEntry, vForntShopLibName, vOrdersLibName) {
+  var bga = new BitGanjApi(vServer, vTokenId, vTokenKey, vForntShopLibName, vOrdersLibName);
   var bgv = new BitGanjValidator(vEntry); 
   vEntry.set("isValid",bgv.isValid);   
   if (bgv.isValid !== true) {
