@@ -9,20 +9,20 @@ function BitGanjPubs(v_lib, v_gate) {
   var vPointId=vEntry.field("BookmarkId");
   if (vPointId>0)
   {
-	 var vFlib=this.clib;
-  	var vCPub=vFlib.findByKey(vPointId);
-  	if (vCPub===null && vPointId>0)
+  	var vCPub=this.findByKey(vPointId);
+  	if (vCPub===false)
   	{
 		var newPub=new Object();
 		newPub["BookmarkId"]=vPointId;
 		newPub["FrontShopTitle"]=vEntry.field("FrontTitle");
 		newPub["Photos"]=vEntry.field("PublicURL");
-		var pub=vFlib.create(newPub);
+   var pub=vFlib.create(newPub);
 		pub.set("Location",vEntry.field("Loc"));
 		pub.set("Price",vEntry.field("TotalPrice"));
 		vEntry.set("PublicationEntry",pub);
 		pub.set("RegionInfo",vEntry.field("Region"));
-  		res=pub;
+   this.refresh(pub);
+		res=pub;
   	} else { res=vCPub; };
   };
   return res;
@@ -38,6 +38,22 @@ BitGanjPubs.prototype.refresh = function(vPub) {
    };
   return res;
 };
+
+BitGanjPubs.prototype.findByKey=function(vKeyId){
+  res=false;
+  var ves=this.clib.entries();
+  for(var i=0;i<ves.length;i++)
+  {
+    var ve=ves[i];
+    if(vKeyId==ve.field("BookmarkId"))
+    {
+       res=ve;
+       break;
+    };
+  };
+  return res;
+};
+
 
 BitGanjPubs.prototype.UpdateState = function(vPub) {
   var res=false;
