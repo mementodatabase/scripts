@@ -58,7 +58,7 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
          };
        } else
        {
-          var vGate=this.gate;
+          var vGate=bga.gate;
           res=vGate.call(vEntry,'PointsApi.php');
           if (res===true)
           {
