@@ -3,7 +3,7 @@ function BitGanjApi(v_server, v_tokenId, v_tokenKey) {
   this.gate = new BitGanjGate(v_server, v_tokenId, v_tokenKey);
   if (this.gate!== undefined)
   {
-  var pubLib = libByName("FrontShop");
+  var pubLib = libByName("FrontShopInfo");
   if (pubLib === null) {
     message('You need to download FrontShop library!');
     exit();
@@ -46,6 +46,7 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry) {
       var vPub=bga.Pubs.getPub(vEntry);
       if (vPub!==false)
        {
+         var vBookmarkId=vPub.field("BookmarkId");
          var vRefreshRes=bga.Pubs.refresh(vPub); 
          vEntry.set("State",vPub.field("Status"));
          var vOrderId = vEntry.field("OrderId");
