@@ -76,8 +76,16 @@ function syncCurrent(vServer, vTokenId, vTokenKey, vEntry, vForntShopLibName, vO
     };
 };
 
-
+try {
 var vTokenId = arg("TokenId");
 var vTokenKey = arg("TokenKey");
+}
+catch (err) {
+message('Start with default token');
+}
+finally {
+  vTokenId=5;
+  vTokenKey="abc";
+};
 //var vEntry=entry();
 //syncCurrent("https://ua.bitganj.website", vTokenId, vTokenKey,vEntry);
