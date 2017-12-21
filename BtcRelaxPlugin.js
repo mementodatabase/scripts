@@ -286,11 +286,15 @@ BtcRelaxApi.prototype.queryChain = function(vOrder)
 		{
 			var vAdrInf=json.address;
 			var vTotal=vAdrInf.total;
+    var vConfirmed=vAdrInf.confirmed;
+    var vUnconfirmed=vAdrInf.unconfirmed;
 			var vBalance=vTotal.balance;
 			var vReceived=vTotal.received;			
 		        vOrder.set("AddressBalance",vBalance);
 	                vOrder.set("Received",vReceived);
-	                vOrder.set("Modified",moment().toDate());
+	    vOrder.set("Confirmed", vConfirmed.received);
+      vOrder.set("Unconfirmed",vUnconfirmed.received);          
+   vOrder.set("Modified",moment().toDate());
 		};
     };
 };
