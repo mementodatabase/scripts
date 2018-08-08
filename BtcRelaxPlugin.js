@@ -44,7 +44,7 @@ BtcRelaxApi.prototype.syncEntry = function(vEntry)
 BtcRelaxApi.prototype.newEntry = function(vEntry)
 {
     var msg=vEntry.field("ServerRequest");
-    var callUrl=this.server+'?request=newBookmark&tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+    var callUrl=this.server+'/api/newBookmark/?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
     log("Calling URL:"+callUrl+msg);
     var result=http().get(callUrl+encodeURIComponent(msg));  
     if(result.code==200)
@@ -189,7 +189,7 @@ BtcRelaxApi.prototype.prepareRequest = function(vPub)
     {    
          log("Preparing bookmark Id:"+pointId);
 	 var msg = '{"type":"GetPointState","bookmarkId":"' + pointId + '"}'; 
-         var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+         var callUrl=this.server+'/api/getBookmark/?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
          vPub.set("Request",callUrl+encodeURIComponent(msg));
     }
     else
