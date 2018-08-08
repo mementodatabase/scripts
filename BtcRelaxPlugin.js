@@ -44,7 +44,7 @@ BtcRelaxApi.prototype.syncEntry = function(vEntry)
 BtcRelaxApi.prototype.newEntry = function(vEntry)
 {
     var msg=vEntry.field("ServerRequest");
-    var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+    var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&request=addBookmark';
     log("Calling URL:"+callUrl+msg);
     var result=http().get(callUrl+encodeURIComponent(msg));  
     if(result.code==200)
