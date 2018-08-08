@@ -15,7 +15,7 @@ BtcRelaxApi.prototype.prepareEntity = function (vEntry) {
     var vAdv = vEntry.field("FrontTitle");
     var vPrice = vEntry.field("TotalPrice");
     var cReg= vEntry.field("Regions");
-	var vDescr=vEntry.field("PointDescription");
+    var vDescr=vEntry.field("PointDescription");
     var vRegCounts=cReg.length;  
     var vRegion = null;
 	var commands = null;
@@ -44,7 +44,7 @@ BtcRelaxApi.prototype.syncEntry = function(vEntry)
 BtcRelaxApi.prototype.newEntry = function(vEntry)
 {
     var msg=vEntry.field("ServerRequest");
-    var callUrl=this.server+'?method=addPoint+tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
+    var callUrl=this.server+'?tokenId='+this.tokenId+'&tokenKey='+this.tokenKey+'&action=';
     log("Calling URL:"+callUrl+msg);
     var result=http().get(callUrl+encodeURIComponent(msg));  
     if(result.code==200)
@@ -286,15 +286,15 @@ BtcRelaxApi.prototype.queryChain = function(vOrder)
 		{
 			var vAdrInf=json.address;
 			var vTotal=vAdrInf.total;
-    var vConfirmed=vAdrInf.confirmed;
-    var vUnconfirmed=vAdrInf.unconfirmed;
+    			var vConfirmed=vAdrInf.confirmed;
+    			var vUnconfirmed=vAdrInf.unconfirmed;
 			var vBalance=vTotal.balance;
 			var vReceived=vTotal.received;			
 		        vOrder.set("AddressBalance",vBalance);
 	                vOrder.set("Received",vReceived);
-	    vOrder.set("Confirmed", vConfirmed.received);
-      vOrder.set("Unconfirmed",vUnconfirmed.received);          
-   vOrder.set("Modified",moment().toDate());
+	    		vOrder.set("Confirmed", vConfirmed.received);
+      			vOrder.set("Unconfirmed",vUnconfirmed.received);          
+   			vOrder.set("Modified",moment().toDate());
 		};
     };
 };
