@@ -13,5 +13,5 @@ function refreshBitches()
 function refreshBitch(bitch)
 {         
     if (bitch === null) { var cEntry = entry(); refreshBitch(cEntry); }
-    else { bitch.set('Website',cEnt.field('baseUrl')) };
+    else { bitch.set('Website',bitch.field('baseUrl')) };
 }; 
