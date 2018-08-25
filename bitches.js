@@ -5,16 +5,13 @@ function refreshBitches()
          var count =entries.length;       
          for(var i=0;i<count;i++)
              {
-             var cEnt =entries[i];
+                  var cEnt =entries[i];
                   refreshBitch(cEnt);    
              };
 }; 
 
 function refreshBitch(bitch)
-{
-         if (bitch == null)
-         {
-                  bitch = entry();               
-         }
-         bitch.set('Website',cEnt.field('baseUrl'));
+{         
+    if (bitch === null) { var cEntry = entry(); refreshBitch(cEntry); }
+    else { bitch.set('Website',cEnt.field('baseUrl')) };
 }; 
