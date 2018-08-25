@@ -6,7 +6,7 @@ function refreshBitches()
          for(var i=0;i<count;i++)
              {
              var cEnt =entries[i];
-             cEnt.set('Website',cEnt.field('baseUrl'));
+                  refreshBitch(cEnt);    
              };
 }; 
 
