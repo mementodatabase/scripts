@@ -6,6 +6,40 @@ function BtcRelaxApi( v_server ,v_tokenKey )
     this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
 }
 
+BtcRelaxApi.prototype.UpdatePointState = function(cEntry) {
+	var cId = cEntry.field("bookmarkId");
+	if (cId !== null) {
+		var query = 'https://' + this.server + "/api/Bookmark?action=GetPointState&bookmarkId="+cId+"&author="+cEntry['author'];
+		var vResult =http().get(query);
+		if (vResult.code === 200)
+		{
+    			var json=JSON.parse(vResult.body);
+			if (json.BookmarkResult === true)
+			{
+	   			var vState = json.BookmarkState;
+				if (cId === vState.bookmarkId)
+	   			{
+			  		var cState = cEntry.field("Status");	
+		 	  		if (cState !== vState.bookmarkState)
+					{cEntry.set("Status",vState.bookmarkState);}
+				};	
+			};
+		};
+	} else { this.RegisterPoint(cEntry); }
+}
+
+BtcRelaxApi.prototype.RegisterPoint(cEntry) {
+	var loc = vEntry.field("Loc");
+        var nLat,nLng,auth, price;
+	var i=0;	
+	nLat = Math.round(loc.lat * 1000000) / 1000000;
+        nLng = Math.round(loc.lng * 1000000) / 1000000;
+	auth = cEntry['author'];
+	price = cEntry.field('TotalPrice');
+	cEntry.set("ServerRequest",'"author="' + auth + '";lat="' + nLat + '";lng="' + nLng + 
+		  '";price="' + price );
+}
+
 BtcRelaxApi.prototype.getVersion = function() {
     var result = http().get('https://' + this.server + '/api/GetVer');
     if(result.code===200) {
