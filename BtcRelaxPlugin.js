@@ -26,7 +26,7 @@ BtcRelaxApi.prototype.UpdatePointState = function(cEntry) {
 			};
 		};
 	} else { this.RegisterPoint(cEntry); }
-}
+};
 
 BtcRelaxApi.prototype.RegisterPoint(cEntry) {
 	var loc = vEntry.field("Loc");
@@ -38,7 +38,7 @@ BtcRelaxApi.prototype.RegisterPoint(cEntry) {
 	price = cEntry.field('TotalPrice');
 	cEntry.set("ServerRequest",'"author="' + auth + '";lat="' + nLat + '";lng="' + nLng + 
 		  '";price="' + price );
-}
+};
 
 BtcRelaxApi.prototype.getVersion = function() {
     var result = http().get('https://' + this.server + '/api/GetVer');
@@ -46,7 +46,7 @@ BtcRelaxApi.prototype.getVersion = function() {
     	var json = JSON.parse(result.body);
 	return json.Core;    
     } else { return false; };
-}
+};
 
 
 BtcRelaxApi.prototype.prepareEntity = function (vEntry) {
