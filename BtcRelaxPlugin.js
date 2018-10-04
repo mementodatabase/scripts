@@ -1,11 +1,17 @@
 /* global http, moment */
 
-function BtcRelaxApi( v_server , v_tokenId, v_tokenKey, v_readOnly )
+function BtcRelaxApi( v_server ,v_tokenKey )
 {
-    this.server = v_server !== null? v_server: null;
-    this.tokenId = v_tokenId  !== null? v_tokenId: null;
+    this.server = v_server !== null? v_server: 'fastfen.club';
     this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
-    this.isReadOnly = v_readOnly  !== null? v_readOnly: false;
+}
+
+BtcRelaxApi.prototype.getVersion = function() {
+    var result = http().get('https://' + this.server + '/api/GetVer');
+    if(result.code===200) {
+    	var json = JSON.parse(result.body);
+	return json.Core;    
+    } else { return false; };
 }
 
 
