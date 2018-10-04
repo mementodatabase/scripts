@@ -3,7 +3,7 @@ function getVersionByEntry(cEntry)
   var vHost = cEntry.field("Hostname");
   var vAPI = new BtcRelaxApi(vHost);
   var v = vAPI.getVersion();
-  if (v !== false) { cEntry.set("responce",json.Core); };
+  if (v !== false) { cEntry.set("responce",v); };
 };
 
 var clib = lib(); 
