@@ -1,7 +1,7 @@
 function getPointState(cEntry) {
 var cId = cEntry.field("bookmarkId");
 if (cId !== null) {
-	var query = "https://ganj.site/api/Bookmark?action=GetPointState&bookmarkId="+cId+"&author="+cEntry['author'];
+	var query = "https://shop.ganj.site/api/Bookmark?action=GetPointState&bookmarkId="+cId+"&author="+cEntry['author'];
 	var vResult =http().get(query);
 	if (vResult.code === 200)
 		{
