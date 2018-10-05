@@ -28,8 +28,8 @@ BtcRelaxApi.prototype.UpdatePointState = function(cEntry) {
 	};
 };
 
-BtcRelaxApi.prototype.RegisterPoint(cEntry) {
-	var loc = vEntry.field("Loc");
+BtcRelaxApi.prototype.RegisterPoint = function (cEntry) {
+	var loc = cEntry.field("Loc");
         var nLat,nLng,auth, price;
 	var i=0;	
 	nLat = Math.round(loc.lat * 1000000) / 1000000;
@@ -409,7 +409,7 @@ BtcRelaxApi.prototype.validateEntries = function()
  };
  
 BtcRelaxApi.prototype.getPublicationsStates = function()
- {
+{
          var clib = lib(); 
          var entries = clib.entries();
          var count =entries.length;
@@ -420,7 +420,7 @@ BtcRelaxApi.prototype.getPublicationsStates = function()
              this.getPublicationState(current);
              message("Processed:"+i+" of "+count+" items");
          };  
-  };
+};
 
 BtcRelaxApi.prototype.getRegionPath = function(entry)
 {
@@ -433,47 +433,3 @@ BtcRelaxApi.prototype.getRegionPath = function(entry)
    }; 
    return res;
 };
-
-function syncAll(vServer)
-{
-   var bra=new BtcRelaxApi( vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
-   bra.validateEntries();
-   bra.syncEntries();
-};
-
-function syncCurrent(vServer)
-{
-   var bra=new BtcRelaxApi( vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
-   var cE = entry();
-   bra.validateEntry(cE);
-   bra.syncEntry(cE);
-};
-
-function refreshPub(vServer)
-{
-    var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
-    var cE = entry();
-    bra.getPublicationState(cE);
-    
-};
-
-function refreshAllPubs(vServer)
-{
-    var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
-    bra.getPublicationsStates();
-    bra.getIterateOrders();    
-};
-
-
-
-function refreshAllOrders(vServer)
-{
-    var bra=new BtcRelaxApi(  vServer,2,"be55d4034229177ca6f864a87cb630d3", false);
-    bra.getIterateOrders();    
-};
-
-//refreshAllPubs('https://ua.bitganj.website');
-//refreshPub('https://ua.bitganj.website');
-//syncCurrent('https://ua.bitganj.website');
-//syncAll('https://ua.bitganj.website');
-//refreshAllOrders('https://ua.bitganj.website');
