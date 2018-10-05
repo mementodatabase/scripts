@@ -25,7 +25,7 @@ BtcRelaxApi.prototype.UpdatePointState = function(cEntry) {
 				};	
 			};
 		};
-	} else { this.RegisterPoint(cEntry); }
+	} else { this.RegisterPoint(cEntry); };
 };
 
 BtcRelaxApi.prototype.RegisterPoint(cEntry) {
