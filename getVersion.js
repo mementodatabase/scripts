@@ -1,5 +1,15 @@
-var cEntry=entry();
-var vReq = cEntry.field("request");
-var result = http().get(vReq);
-var json = JSON.parse(result.body);
-cEntry.set("responce",json.Core);
+function getVersionByEntry(cEntry)
+{
+  var vHost = cEntry.field("Hostname");
+  var vAPI = new BtcRelaxApi(vHost);
+  var v = vAPI.getVersion();
+  if (v !== false) { cEntry.set("responce",v); };
+};
+
+var clib = lib(); 
+var entries = clib.entries();
+var count =entries.length;
+for(var i=0;i<count;i++)
+{
+  getVersionByEntry(entries[i]);
+}; 
