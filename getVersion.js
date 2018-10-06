@@ -1,8 +1,8 @@
 var clib = lib(); 
 var entries = clib.entries();
-var count =entries.length;
-for(var i=0;i<count;i++)
+for(var i=0;i<entries.length;i++)
 {
+  var cEntry = entries[i];
   var vHost = cEntry.field("Hostname");
   var vAPI = new BtcRelaxApi(vHost);
   var v = vAPI.getVersion();
