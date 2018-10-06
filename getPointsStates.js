@@ -28,12 +28,13 @@ function registerPoint(pEntry) {
 
 function setPointState(pEntry, pState) {
   if (pState==='Preparing') {
-    var vLink = pEntry.field("URLToPhoto");
-    var vDescr = pEntry.field("Description");
-    var vPointId = pEntry.field("BookmarkId");
-    var vQry = "UPDATE `Bookmarks` SET `State` = 'Published', `Link` = '" +
+      var vLink = pEntry.field("URLToPhoto");
+      var vDescr = pEntry.field("Description");
+      var vPointId = pEntry.field("BookmarkId");
+      var vQry = "UPDATE `Bookmarks` SET `State` = 'Published', `Link` = '" +
         vLink + "', `Description` = '"+ vDescr + "'  WHERE `idBookmark` = "+ vPointId + ";";
-  }
+      cEntry.set("ServerRequest",vQry );
+    }
   cEntry.set("Status",pState );
 }
 
