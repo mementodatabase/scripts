@@ -34,9 +34,9 @@ function setPointState(pEntry, pState) {
       var vPointId = pEntry.field("BookmarkId");
       var vQry = "UPDATE `Bookmarks` SET `State` = 'Published', `Link` = '" +
         vLink + "', `Description` = '"+ vDescr + "'  WHERE `idBookmark` = "+ vPointId + ";";
-      cEntry.set("ServerRequest",vQry );
+      pEntry.set("ServerRequest",vQry );
     }
-  cEntry.set("Status",pState );
+  pEntry.set("Status",pState );
 }
 
 
