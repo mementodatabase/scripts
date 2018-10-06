@@ -27,6 +27,7 @@ function registerPoint(pEntry) {
 }
 
 function setPointState(pEntry, pState) {
+  log("State:" + pState);
   if (pState==='Preparing') {
       var vLink = pEntry.field("URLToPhoto");
       var vDescr = pEntry.field("Description");
