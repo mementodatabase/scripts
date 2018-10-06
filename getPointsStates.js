@@ -23,7 +23,7 @@ function registerPoint(pEntry) {
   price = pEntry.field('TotalPrice');
   title = getAdvertiseTitle(pEntry);
   pEntry.set("ServerRequest", "INSERT INTO `Bookmarks` (`AdvertiseTitle`,`CustomPrice`,`IdDroper`,`Latitude`,`Longitude`)" +
-    "VALUES ( '" + title + "'," + price + ",'" + auth + "'," + nLat + "," + nLng + ");");
+    "VALUES ( '" + title + "'," + price + ",'" + auth + "'," + nLat + "," + nLng + "); SELECT LAST_INSERT_ID();");
 }
 
 function getPointState(cEntry) {
