@@ -50,11 +50,7 @@ function getPointState(cEntry) {
       if (json.BookmarkResult === true) {
         var vState = json.BookmarkState;
         if (cId === vState.bookmarkId) {
-          var cState = cEntry.field("Status");
-          if (cState !== vState.bookmarkState) {
             setPointState(cEntry,vState.bookmarkState);
-            
-          }
         }
       }
     }
