@@ -26,6 +26,18 @@ function registerPoint(pEntry) {
     "VALUES ( '" + title + "'," + price + ",'" + auth + "'," + nLat + "," + nLng + "); SELECT LAST_INSERT_ID();");
 }
 
+function setPointState(pEntry, pState) {
+  if (pState==='Preparing') {
+    var vLink = pEntry.field("URLToPhoto");
+    var vDescr = pEntry.field("Description");
+    var vPointId = pEntry.field("BookmarkId");
+    var vQry = "UPDATE `Bookmarks` SET `State` = 'Published', `Link` = '" +
+        vLink + "', `Description` = '"+ vDescr + "'  WHERE `idBookmark` = "+ vPointId + ";";
+  }
+  cEntry.set("Status",pState );
+}
+
+
 function getPointState(cEntry) {
   var cId = cEntry.field("bookmarkId");
   if (cId !== null) {
@@ -38,7 +50,8 @@ function getPointState(cEntry) {
         if (cId === vState.bookmarkId) {
           var cState = cEntry.field("Status");
           if (cState !== vState.bookmarkState) {
-            cEntry.set("Status", vState.bookmarkState);
+            setPointState(cEntry,vState.bookmarkState);
+            
           }
         }
       }
