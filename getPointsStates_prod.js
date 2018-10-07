@@ -4,7 +4,7 @@ var count =entries.length;
 for (i=0;i<count;i++)
 {
   var cEntry = entries[i];
-  var vAPI = new BtcRelaxApi(vHost);
+  var vAPI = new BtcRelaxApi("shop.ganj.site");
   vAPI.getPointState(cEntry);
   
 }
