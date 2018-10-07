@@ -34,7 +34,7 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
   nLng = Math.round(loc.lng * 1000000) / 1000000;
   auth = pEntry.author;
   price = pEntry.field('TotalPrice');
-  title = getAdvertiseTitle(pEntry);
+  title = this.getAdvertiseTitle(pEntry);
   pEntry.set("ServerRequest", "INSERT INTO `Bookmarks` (`AdvertiseTitle`,`CustomPrice`,`IdDroper`,`Latitude`,`Longitude`)" +
     "VALUES ( '" + title + "'," + price + ",'" + auth + "'," + nLat + "," + nLng + "); SELECT LAST_INSERT_ID();");
 }
@@ -62,11 +62,11 @@ BtcRelaxApi.prototype.getPointState = function (cEntry) {
       if (json.BookmarkResult === true) {
         var vState = json.BookmarkState;
         if (cId === vState.bookmarkId) {
-            setPointState(cEntry,vState.bookmarkState);
+            this.setPointState(cEntry,vState.bookmarkState);
         }
       }
     }
   } else {
-    registerPoint(cEntry);
+    this.registerPoint(cEntry);
   }
 }
