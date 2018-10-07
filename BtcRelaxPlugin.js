@@ -57,7 +57,7 @@ BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
 BtcRelaxApi.prototype.getPointState = function (cEntry) {
   var cId = cEntry.field("bookmarkId");
   if (cId !== null) {
-    var query = "https://fastfen.club/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + cEntry.author;
+    var query = "https://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + cEntry.author;
     var vResult = http().get(query);
     if (vResult.code === 200) {
       var json = JSON.parse(vResult.body);
