@@ -7,7 +7,7 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
 BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
   var nLat = vLocation.lat;
   var nLng = vLocation.lng;
-  var i=0;
+  var i=1;
   while (vLocation.hasNext) {
     vLocation = vLocation.next;
     nLat = nLat + vLocation.lat;
