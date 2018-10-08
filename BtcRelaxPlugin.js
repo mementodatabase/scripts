@@ -54,7 +54,6 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
         pEntry.set("ServerRequest", JSON.stringify(json));  
     } else { message(vResult.code); };
 }
-}
 
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
   log("State:" + pState);
