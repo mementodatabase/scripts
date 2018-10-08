@@ -44,6 +44,14 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
   var auth = pEntry.author;
   var price = pEntry.field('TotalPrice');
   var title = this.getAdvertiseTitle(pEntry);
+  var params =  encodeURIComponent('[{"title":"' +title + '","price":' + price +
+    ',"location":{"latitude":' + loc.lat + ',"longitude":'  + loc.lng + '}}]');
+  log(params);
+  var vResult = http().get("https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
+  if (result.code == 200)
+    {
+      message('Point registered');
+    }
   pEntry.set("ServerRequest", "INSERT INTO `Bookmarks` (`AdvertiseTitle`,`CustomPrice`,`IdDroper`,`Latitude`,`Longitude`)" +
     "VALUES ( '" + title + "'," + price + ",'" + auth + "'," + loc.lat + "," + loc.lng + "); SELECT LAST_INSERT_ID();");
 }
