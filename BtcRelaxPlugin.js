@@ -4,6 +4,19 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
     this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
 }
 
+BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
+  var nLat = vLocation.lat;
+  var nLng = vLocation.lng;
+  var i=1;
+  while (vLocation.hasNext) {
+    vLocation = vLocation.next;
+    nLat = nLat + vLocation.lat;
+    nLng = nLng + vLocation.lng;
+    i = i +1;
+  }
+  return {lat:Math.round(nLat/i*1000000)/1000000, lng:Math.round(nLng/i*1000000)/1000000 };
+}
+
 BtcRelaxApi.prototype.getVersion = function() {
   result = http().get("https://" + this.server + "/api/GetVer");
   if (result.code == 200) {
@@ -27,16 +40,23 @@ BtcRelaxApi.prototype.getAdvertiseTitle =  function (pEntry) {
 }
 
 BtcRelaxApi.prototype.registerPoint = function (pEntry) {
-  var loc = pEntry.field("Loc");
-  var nLat, nLng, auth, price, title;
-  var i = 0;
-  nLat = Math.round(loc.lat * 1000000) / 1000000;
-  nLng = Math.round(loc.lng * 1000000) / 1000000;
-  auth = pEntry.author;
-  price = pEntry.field('TotalPrice');
-  title = this.getAdvertiseTitle(pEntry);
-  pEntry.set("ServerRequest", "INSERT INTO `Bookmarks` (`AdvertiseTitle`,`CustomPrice`,`IdDroper`,`Latitude`,`Longitude`)" +
-    "VALUES ( '" + title + "'," + price + ",'" + auth + "'," + nLat + "," + nLng + "); SELECT LAST_INSERT_ID();");
+  var loc = this.getAverageLocation(pEntry.field("Loc"));
+  var auth = pEntry.author;
+  var price = pEntry.field('TotalPrice');
+  var title = this.getAdvertiseTitle(pEntry);
+  var params =  encodeURIComponent('[{"title":"' +title + '","price":' + price +
+    ',"location":{"latitude":' + loc.lat + ',"longitude":'  + loc.lng + '}}]');
+  var vResult = http().get("https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
+  if (vResult.code == 200)
+    {
+        var json = JSON.parse(vResult.body);  
+        if (json.BookmarkResult === true)
+        {
+            pEntry.set("isSent",true);
+            pEntry.set("BookmarkId", json.BookmarkState.bookmarkId);
+            this.setPointState(pEntry, json.BookmarkState.bookmarkState);
+        } else { pEntry.set("ServerRequest", json.BookmarkError); };  
+    } else { message(vResult.code); };
 }
 
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {

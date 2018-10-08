@@ -7,11 +7,11 @@ function refreshBitches()
              {
                   var cEnt =entries[i];
                   refreshBitch(cEnt);    
-             };
-}; 
+             }
+}
 
 function refreshBitch(bitch)
 {         
     if (bitch === null) { var cEntry = entry(); refreshBitch(cEntry); }
-    else { bitch.set('Website',bitch.field('baseUrl')) };
-}; 
+    else { bitch.set('Website',bitch.field('baseUrl')) }
+}
