@@ -54,7 +54,7 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
         {
             pEntry.set("isSent",true);
             pEntry.set("BookmarkId", json.BookmarkState.bookmarkId);
-            this.setPointState(pEntry, json.BookmarkState.bookmarkState);
+            pEntry.set("Status",json.BookmarkState.bookmarkState );
         } else { pEntry.set("ServerRequest", json.BookmarkError); };  
     } else { message(vResult.code); };
 }
