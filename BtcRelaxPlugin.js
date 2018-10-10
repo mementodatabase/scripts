@@ -60,12 +60,23 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
 }
 
 BtcRelaxApi.prototype.updatePoint = function (pEntry) {
-  var vLink = pEntry.field("URLToPhoto");
+      var auth = pEntry.author;      var vLink = pEntry.field("URLToPhoto");
       var vDescr = pEntry.field("Description");
       var vPointId = pEntry.field("BookmarkId");
       var vQry = "UPDATE `Bookmarks` SET `State` = 'Published', `Link` = '" +
         vLink + "', `Description` = '"+ vDescr + "'  WHERE `idBookmark` = "+ vPointId + ";";
-      pEntry.set("ServerRequest",vQry );
+      
+      var params =  encodeURIComponent('[{"title":"' +title + '","price":' + price +
+      ',"location":{"latitude":' + loc.lat + ',"longitude":'  + loc.lng + '}}]');
+      var vResult = http().get("https://" + this.server + "/api/Bookmark?action=UpdatePoint&author=" + auth + "&params=" + params);
+      if (vResult.code == 200)
+      {
+        var json = JSON.parse(vResult.body);  
+        if (json.BookmarkUpdateResult === true)
+        {
+            pEntry.set("ServerRequest",vQry );
+        } else { pEntry.set("ServerRequest", json.BookmarkUpdateError); };  
+      } else { message(vResult.code); };
 }
 
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
