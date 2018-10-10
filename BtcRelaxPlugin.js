@@ -59,22 +59,27 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
     } else { message(vResult.code); };
 }
 
-BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
-  log("State:" + pState);
-  if (pState==='Preparing') {
-      var vLink = pEntry.field("URLToPhoto");
+BtcRelaxApi.prototype.updatePoint = function (pEntry) {
+  var vLink = pEntry.field("URLToPhoto");
       var vDescr = pEntry.field("Description");
       var vPointId = pEntry.field("BookmarkId");
       var vQry = "UPDATE `Bookmarks` SET `State` = 'Published', `Link` = '" +
         vLink + "', `Description` = '"+ vDescr + "'  WHERE `idBookmark` = "+ vPointId + ";";
       pEntry.set("ServerRequest",vQry );
+}
+
+BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
+  log("State:" + pState);
+  if (pState==='Preparing') {
+       this.updatePoint(pEntry);
     }
   pEntry.set("Status",pState );
 }
 
 BtcRelaxApi.prototype.getPointState = function (cEntry) {
   var cId = cEntry.field("bookmarkId");
-  if (cId !== null) {
+  var cIsSent = cEntry.field("isSent");
+  if (cId !== null && cIsSent === true ) {
     var query = "https://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + cEntry.author;
     var vResult = http().get(query);
     if (vResult.code === 200) {
