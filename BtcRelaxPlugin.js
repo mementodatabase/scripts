@@ -55,6 +55,8 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
             pEntry.set("isSent",true);
             pEntry.set("BookmarkId", json.BookmarkState.bookmarkId);
             pEntry.set("Status",json.BookmarkState.bookmarkState );
+            pEntry.set("Latitude",loc.lat );
+            pEntry.set("Longitude",loc.lng );
         } else { pEntry.set("ServerRequest", json.BookmarkError); };  
     } else { message(vResult.code); };
 }
@@ -74,7 +76,9 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
         var json = JSON.parse(vResult.body);  
         if (json.BookmarkUpdateResult === true)
         {
-            pEntry.set("ServerRequest",vQry );
+            pEntry.set("Latitude",json.BookmarkState.bookmarkLatitude );
+            pEntry.set("Longitude",json.BookmarkState.bookmarkLongitude );
+            pEntry.set("URLToPhoto",json.BookmarkState.bookmarkPhotoLink );
         } else { pEntry.set("ServerRequest", json.BookmarkUpdateError); };  
       } else { message(vResult.code); };
 }
