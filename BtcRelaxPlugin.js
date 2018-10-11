@@ -79,6 +79,7 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
             pEntry.set("Latitude",json.BookmarkState.bookmarkLatitude );
             pEntry.set("Longitude",json.BookmarkState.bookmarkLongitude );
             pEntry.set("URLToPhoto",json.BookmarkState.bookmarkPhotoLink );
+            pEntry.set("URLToPhoto",json.BookmarkState.bookmarkDescription );
         } else { pEntry.set("ServerRequest", json.BookmarkUpdateError); };  
       } else { message(vResult.code); };
 }
