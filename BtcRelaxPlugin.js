@@ -49,6 +49,7 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
   var vResult = http().get("https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
   if (vResult.code == 200)
     {
+        log(vResult.body);
         var json = JSON.parse(vResult.body);  
         if (json.BookmarkResult === true)
         {
@@ -73,6 +74,7 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
       var vResult = http().get("https://" + this.server + "/api/Bookmark?action=UpdatePoint&author=" + auth + "&bookmarkId=" + vPointId + "&params=" + params);
       if (vResult.code == 200)
       {
+        log(vResult.body);
         var json = JSON.parse(vResult.body);  
         if (json.BookmarkUpdateResult === true)
         {
