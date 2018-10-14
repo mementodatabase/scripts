@@ -25,7 +25,6 @@ BtcRelaxApi.prototype.getRegionPath = function (pEntry) {
       res=res+", "+this.getRegionPath(pEntry.field("ParentRegion")[0]);
    }; 
    return res;
-};
 }
 
 BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
