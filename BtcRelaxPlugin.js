@@ -5,18 +5,14 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
 }
 
 BtcRelaxApi.prototype.getRegionTitle = function (pEntry) {
-{
     var cReg= pEntry.field("Region");
-	var vRegCounts=cReg.length;  
+    var vRegCounts=cReg.length;  
     var vRegion = null;
-	if(vRegCounts>0) {
-       var regObj =cReg[0];
-       vRegion=this.getRegionPath(regObj); };
+    if(vRegCounts>0) { vRegion=this.getRegionPath(cReg[0]); };
     return vRegion;
 }
 
 BtcRelaxApi.prototype.getRegionPath = function (pEntry) {
-{
    var res;
    res =pEntry.field("RegionTitle");
    var parCnt=pEntry.field("ParentRegion").length;
