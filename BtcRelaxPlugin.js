@@ -1,13 +1,17 @@
 /* global http, moment */
 function BtcRelaxApi( v_server ,v_tokenKey ) {
-    this.server = v_server !== null? v_server: 'fastfen.club';
+    this.server = v_server !== null? v_server: 'shop.btcrelax.xyz';
     this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
 }
 
 BtcRelaxApi.prototype.getRegionTitle(pEntry) {
 var result ='';
+var vReg = pEntry.field("Region");
+if (vReg.length>0) {
+   	result = result + vReg[0].field("RegionTitle");
+};
 return result;
-}
+};
 
 BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
   var nLat = vLocation.lat;
