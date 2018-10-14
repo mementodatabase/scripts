@@ -4,14 +4,19 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
     this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
 }
 
-BtcRelaxApi.prototype.getRegionTitle(pEntry) {
-var result ='';
-var vReg = pEntry.field("Region");
-if (vReg.length>0) {
-   	result = result + vReg[0].field("RegionTitle");
-};
-return result;
-};
+BtcRelaxApi.prototype.getRegionTitle = function (pEntry) {
+  var reg = pEntry.field('Region');
+  var result = '';
+  for (var i2 = 0; i2 < reg.length; i2++) {
+    var linkedEntry = reg[i2];
+    if (result === '') {
+      result = linkedEntry.field("RegionTitle");
+    } else {
+      result = result + " + " + linkedEntry.field("RegionTitle");
+    }
+  }
+  return result;
+}
 
 BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
   var nLat = vLocation.lat;
