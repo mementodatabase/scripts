@@ -112,7 +112,9 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
   log("State:" + pState);
   if (pState==='Preparing') {
-       this.updatePoint(pEntry);
+       var vUrlToPhoto = pEntry.field('URLToPhoto');
+       if (vUrlToPhoto !== "") {
+	 this.updatePoint(pEntry); }
     }
   pEntry.set("Status",pState );
 }
