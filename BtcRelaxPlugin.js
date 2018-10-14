@@ -5,17 +5,27 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
 }
 
 BtcRelaxApi.prototype.getRegionTitle = function (pEntry) {
-  var reg = pEntry.field('Region');
-  var result = '';
-  for (var i2 = 0; i2 < reg.length; i2++) {
-    var linkedEntry = reg[i2];
-    if (result === '') {
-      result = linkedEntry.field("RegionTitle");
-    } else {
-      result = result + " + " + linkedEntry.field("RegionTitle");
-    }
-  }
-  return result;
+{
+    var cReg= pEntry.field("Region");
+	var vRegCounts=cReg.length;  
+    var vRegion = null;
+	if(vRegCounts>0) {
+       var regObj =cReg[0];
+       vRegion=this.getRegionPath(regObj); };
+    return vRegion;
+}
+
+BtcRelaxApi.prototype.getRegionPath = function (pEntry) {
+{
+   var res;
+   res =pEntry.field("RegionTitle");
+   var parCnt=pEntry.field("ParentRegion").length;
+   if(parCnt>0)
+   {
+      res=res+", "+this.getRegionPath(pEntry.field("ParentRegion")[0]);
+   }; 
+   return res;
+};
 }
 
 BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
