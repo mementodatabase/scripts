@@ -4,6 +4,11 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
     this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
 }
 
+BtcRelaxApi.prototype.getRegionTitle(pEntry) {
+var result ='';
+return result;
+}
+
 BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
   var nLat = vLocation.lat;
   var nLng = vLocation.lng;
