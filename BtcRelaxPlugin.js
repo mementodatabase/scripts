@@ -4,6 +4,10 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
   this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
 }
 
+BtcRelaxApi.prototype.setNewState = function (pNewState, pEntry) {
+}
+
+
 BtcRelaxApi.prototype.getRegionTitle = function (pEntry) {
   var cReg= pEntry.field("Region");
   var vRegCounts=cReg.length; var vRegion = null;
