@@ -68,7 +68,9 @@ if (vResult.code == 200) {
           pEntry.set("Status",json.BookmarkState.bookmarkState );
           pEntry.set("Latitude",loc.lat );
           pEntry.set("Longitude",loc.lng );
-      } else { pEntry.set("ServerRequest", json.BookmarkError); };  
+          pEntry.set("ServerError", ""); 
+          pEntry.set("isError", false);
+      } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };  
   } else { message(vResult.code); };
 }
 
@@ -88,7 +90,9 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
           pEntry.set("Longitude",json.BookmarkState.bookmarkLongitude );
           pEntry.set("URLToPhoto",json.BookmarkState.bookmarkPhotoLink );
           pEntry.set("Description",json.BookmarkState.bookmarkDescription );
-      } else { pEntry.set("ServerRequest", json.BookmarkUpdateError); };  
+          pEntry.set("ServerError", ""); 
+          pEntry.set("isError", false);
+      } else {  pEntry.set("ServerError", json.BookmarkUpdateError); pEntry.set("isError", true);};  
     } else { message(vResult.code); };
 }
 
@@ -111,8 +115,9 @@ if (cId !== null && cIsSent === true ) {
     var json = JSON.parse(vResult.body);
     if (json.BookmarkResult === true) {
       var vState = json.BookmarkState;
-      if (cId === vState.bookmarkId) { this.setPointState(cEntry,vState.bookmarkState); }
-    }
+      if (cId === vState.bookmarkId) { this.setPointState(cEntry,vState.bookmarkState);
+                                     pEntry.set("ServerError", ""); pEntry.set("isError", false);}
+    } else { pEntry.set("ServerError", json.BookmarkUpdateError); pEntry.set("isError", true); }
   }
 } else { this.registerPoint(cEntry);}
 }
