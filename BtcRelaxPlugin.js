@@ -8,7 +8,9 @@ BtcRelaxApi.prototype.setNewState = function (pEntry) {
    var vNewState  = arg('NewState');
    var vPointId = pEntry.field("BookmarkId");
    var auth = pEntry.author;
-   var vResult = http().get("https://"  + this.server + "/api/Bookmark?action=SetNewState&author=" + auth + "&bookmarkId=" + vPointId + "&state=" + vNewState);
+   var qry = "https://"  + this.server + "/api/Bookmark?action=SetNewState&author=" + auth + "&bookmarkId=" + vPointId + "&state=" + vNewState;
+   log(qry);
+   var vResult = http().get(qry);
    if (vResult.code == 200) {
       var json = JSON.parse(vResult.body);  
       if (json.BookmarkResult === true)
