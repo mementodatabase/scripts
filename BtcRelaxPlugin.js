@@ -118,19 +118,19 @@ if (pState==='Preparing') {
 pEntry.set("Status",pState );
 }
 
-BtcRelaxApi.prototype.getPointState = function (cEntry) {
-var cId = cEntry.field("bookmarkId");
-var cIsSent = cEntry.field("isSent");
+BtcRelaxApi.prototype.getPointState = function (pEntry) {
+var cId = pEntry.field("bookmarkId");
+var cIsSent = pEntry.field("isSent");
 if (cId !== null && cIsSent === true ) {
-  var query = "https://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + cEntry.author;
+  var query = "https://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + pEntry.author;
   var vResult = http().get(query);
   if (vResult.code === 200) {
     var json = JSON.parse(vResult.body);
     if (json.BookmarkResult === true) {
       var vState = json.BookmarkState;
-      if (cId === vState.bookmarkId) { this.setPointState(cEntry,vState.bookmarkState);
+      if (cId === vState.bookmarkId) { this.setPointState(pEntry,vState.bookmarkState);
                                      pEntry.set("ServerError", ""); pEntry.set("isError", false);}
     } else { pEntry.set("ServerError", json.BookmarkUpdateError); pEntry.set("isError", true); }
   }
-} else { this.registerPoint(cEntry);}
+} else { this.registerPoint(pEntry);}
 }
