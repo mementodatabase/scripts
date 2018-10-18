@@ -4,7 +4,20 @@ function BtcRelaxApi( v_server ,v_tokenKey ) {
   this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
 }
 
-BtcRelaxApi.prototype.setNewState = function (pNewState, pEntry) {
+BtcRelaxApi.prototype.setNewState = function (pEntry) {
+   var vNewState  = arg('NewState');
+   var vPointId = pEntry.field("BookmarkId");
+   var auth = pEntry.author;
+   var vResult = http().get("https://"  + this.server + "/api/Bookmark?action=SetNewState&author=" + auth + "&bookmarkId=" + vPointId + "&state=" + vNewState);
+   if (vResult.code == 200) {
+      var json = JSON.parse(vResult.body);  
+      if (json.BookmarkSetStateResult === true)
+      {
+          this.setPointState(pEntry,json.BookmarkState.bookmarkState);
+          pEntry.set("ServerError", ""); 
+          pEntry.set("isError", false);
+      } else { pEntry.set("ServerError", json.BookmarkSetStateError); pEntry.set("isError", true); };  
+    } else { message(vResult.code); };
 }
 
 
