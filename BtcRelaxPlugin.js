@@ -2,6 +2,9 @@
 function BtcRelaxApi( v_server ,v_tokenKey ) {
   this.server = v_server !== undefined ? v_server: 'shop.btcrelax.xyz';
   this.tokenKey = v_tokenKey  !== null? v_tokenKey: null;
+  this.registered = 0;
+  this.saled = 0;
+  this.catched = 0;
 }
 
 BtcRelaxApi.prototype.setNewState = function (pEntry) {
@@ -72,7 +75,7 @@ var price = pEntry.field('TotalPrice');
 var title = this.getAdvertiseTitle(pEntry);
 var params =  encodeURIComponent('[{"title":"' +title + '","price":' + price +
   ',"location":{"latitude":' + loc.lat + ',"longitude":'  + loc.lng + '}}]');
-var vResult = http().get("https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
+var vResult = http().get("https://" + this.server + "/pStateapi/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
 if (vResult.code == 200) {
       log(vResult.body);
       var json = JSON.parse(vResult.body);  
@@ -85,6 +88,7 @@ if (vResult.code == 200) {
           pEntry.set("Longitude",loc.lng );
           pEntry.set("ServerError", ""); 
           pEntry.set("isError", false);
+          this.registered = this.registered + 1; 
       } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };  
   } else { message(vResult.code); };
 }
@@ -113,11 +117,25 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
 
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
   log("State:" + pState);
+  var vStateStart = pEntry.field("Status");
   if (pState==='Preparing') {
      var vUrlToPhoto = pEntry.field('URLToPhoto');
      if (vUrlToPhoto !== "") { this.updatePoint(pEntry); }
   }
   pEntry.set("Status",pState );
+  if (vStateStart !== pState)
+  {
+    switch(pState) {
+    case 'Saled':
+        this.saled = this.saled + 1; 
+        break;
+    case 'Catched':
+        this.catched = this.catched + 1;
+        break;
+    default:
+        break;
+    }
+  }
 }
 
 BtcRelaxApi.prototype.getPointState = function (pEntry) {
