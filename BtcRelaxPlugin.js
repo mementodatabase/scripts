@@ -150,8 +150,7 @@ if (cId !== null && cIsSent === true ) {
       var vState = json.BookmarkState;
       var vEnd = vState.bookmarkEndDate;
       if (vEnd !== undefined) { 
-        var vEndDate = JSON.stringify(vEnd); 
-        log(vEndDate); 
+        log(vEnd); 
       };
       if (cId === vState.bookmarkId) { this.setPointState(pEntry,vState.bookmarkState);
                                      pEntry.set("ServerError", ""); pEntry.set("isError", false);}
