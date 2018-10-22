@@ -149,7 +149,7 @@ if (cId !== null && cIsSent === true ) {
     if (json.BookmarkResult === true) {
       var vState = json.BookmarkState;
       var vEnd = vState.bookmarkEndDate;
-      if (vEnd.date !== undefined) { log(JSON.stringify(vEnd)); pEntry.set("EndDate",vEnd.date ); };
+      log(JSON.stringify(vEnd));
       if (cId === vState.bookmarkId) { this.setPointState(pEntry,vState.bookmarkState);
                                      pEntry.set("ServerError", ""); pEntry.set("isError", false);}
     } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
