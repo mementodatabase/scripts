@@ -130,6 +130,8 @@ if (cId !== null && cIsSent === true ) {
     var json = JSON.parse(vResult.body);
     if (json.BookmarkResult === true) {
       var vState = json.BookmarkState;
+      var vEnd = json.BookmarkEndDate;
+      log(vEnd);
       if (cId === vState.bookmarkId) { this.setPointState(pEntry,vState.bookmarkState);
                                      pEntry.set("ServerError", ""); pEntry.set("isError", false);}
     } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
