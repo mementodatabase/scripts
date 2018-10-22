@@ -6,6 +6,6 @@ for (i=0;i<count;i++)
 {
   var cEntry = entries[i];
   vAPI.getPointState(cEntry);
-}
-var vResultMsg = 'Registered:' + vAPI.registered + ';Saled:' + vAPI.saled + ';Catched:' + vAPI.catched;
+};
+var vResultMsg = 'Registered:' + vAPI.registered + '\n Saled:' + vAPI.saled + '\n Catched:' + vAPI.catched;
 message(vResultMsg);
