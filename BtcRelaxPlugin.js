@@ -75,7 +75,7 @@ var price = pEntry.field('TotalPrice');
 var title = this.getAdvertiseTitle(pEntry);
 var params =  encodeURIComponent('[{"title":"' +title + '","price":' + price +
   ',"location":{"latitude":' + loc.lat + ',"longitude":'  + loc.lng + '}}]');
-var vResult = http().get("https://" + this.server + "/pStateapi/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
+var vResult = http().get("https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
 if (vResult.code == 200) {
       log(vResult.body);
       var json = JSON.parse(vResult.body);  
@@ -90,7 +90,7 @@ if (vResult.code == 200) {
           pEntry.set("isError", false);
           this.registered = this.registered + 1; 
       } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };  
-  } else { message(vResult.code); };
+  } else { pEntry.set("ServerError", vResult.code + "as a result of call:"); pEntry.set("isError", true); };
 }
 
 BtcRelaxApi.prototype.updatePoint = function (pEntry) {
