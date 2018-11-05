@@ -69,8 +69,9 @@ return result;
 }
 
 BtcRelaxApi.prototype.registerPoint = function (pEntry) {
-var loc = this.getAverageLocation(pEntry.field("Loc"));
-if (loc !== null) {
+var vLocation = pEntry.field("Loc");
+if (vLocation !== null) {
+var loc = this.getAverageLocation(vLocation);
 var auth = pEntry.author;
 var price = pEntry.field('TotalPrice');
 var title = this.getAdvertiseTitle(pEntry);
@@ -157,4 +158,18 @@ if (cId !== null && cIsSent === true ) {
     } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
   }
 } else { this.registerPoint(pEntry);}
+}
+
+function SyncLibrary() {
+var cLib = lib();
+var entries =cLib.entries();
+var count =entries.length;
+var vAPI = new BtcRelaxApi("shop.bitganj.website");
+for (i=0;i<count;i++)
+{
+  var cEntry = entries[i];
+  vAPI.getPointState(cEntry);
+};
+var vResultMsg = 'Registered:' + vAPI.registered + '\n Saled:' + vAPI.saled + '\n Catched:' + vAPI.catched;
+message(vResultMsg);
 }
