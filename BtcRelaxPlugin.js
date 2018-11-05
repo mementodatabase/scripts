@@ -70,7 +70,7 @@ return result;
 
 BtcRelaxApi.prototype.registerPoint = function (pEntry) {
 var loc = this.getAverageLocation(pEntry.field("Loc"));
-if (loc !== undefined) {
+if (loc !== null) {
 var auth = pEntry.author;
 var price = pEntry.field('TotalPrice');
 var title = this.getAdvertiseTitle(pEntry);
