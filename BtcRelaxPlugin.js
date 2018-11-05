@@ -93,7 +93,7 @@ if (vResult.code == 200) {
           this.registered = this.registered + 1; 
       } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };  
   } else { pEntry.set("ServerError", vResult.code + "as a result of call:"); pEntry.set("isError", true); };
-} else { pEntry.set("ServerError", "Set location before sync!"); pEntry.set("isError", true); };
+} else { pEntry.set("ServerError", "Location is not set. Set location before sync!"); pEntry.set("isError", true); };
 }
 
 BtcRelaxApi.prototype.updatePoint = function (pEntry) {
