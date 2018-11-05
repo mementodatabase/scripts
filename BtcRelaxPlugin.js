@@ -173,3 +173,15 @@ for (i=0;i<count;i++)
 var vResultMsg = 'Registered:' + vAPI.registered + '\n Saled:' + vAPI.saled + '\n Catched:' + vAPI.catched;
 message(vResultMsg);
 }
+
+function SetState() {
+  var vEntry = entry();
+  var vApi = new BtcRelaxApi("shop.bitganj.website");
+  vApi.setNewState(vEntry);
+} 
+
+function GetState() {
+  var vEntry = entry();
+  var vApi = new BtcRelaxApi("shop.bitganj.website");
+  vApi.getPointState(vEntry);
+}
