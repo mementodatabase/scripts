@@ -152,7 +152,11 @@ if (cId !== null && cIsSent === true ) {
     if (json.BookmarkResult === true) {
       var vState = json.BookmarkState;
       var vEnd = vState.bookmarkEndDate;
-		if (vEnd !== undefined) { log(vEnd[0]);  };
+      var vOrderId = vState.bookmarkOrderId;
+      if (vOrderId !== undefined)      { 
+      pEntry.set("OrderId", vOrderId);
+      log(vOrderId);  };
+		if (vEnd !== undefined)      { log(vEnd.date);  };
       if (cId === vState.bookmarkId) { this.setPointState(pEntry,vState.bookmarkState);
                                      pEntry.set("ServerError", ""); pEntry.set("isError", false);}
     } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
