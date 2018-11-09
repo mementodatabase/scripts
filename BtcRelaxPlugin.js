@@ -153,11 +153,14 @@ if (cId !== null && cIsSent === true ) {
     var json = JSON.parse(vResult.body);
     if (json.BookmarkResult === true) {
       var vState = json.BookmarkState;
-      var vEnd = vState.bookmarkEndDate;
+      var vEndRaw = vState.bookmarkEndDate;
       var vOrderId = vState.bookmarkOrderId;
       log("OrderId:"  + vOrderId);
       if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
-      if (vEnd !== undefined) { pEntry.set("EndDate", vEnd.date ); } else { pEntry.set("EndDate", null ); };
+      if (vEndRaw !== undefined) { 
+        var vEndDate = moment.tz(vEndRaw.date, vEndRaw.timezone );  
+        pEntry.set("EndDate", vEndDate );
+       } else { pEntry.set("EndDate", null ); };
       if (cId === vState.bookmarkId) 
       { this.setPointState(pEntry,vState.bookmarkState);pEntry.set("ServerError", ""); pEntry.set("isError", false);}
     	} else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
