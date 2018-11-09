@@ -155,6 +155,7 @@ if (cId !== null && cIsSent === true ) {
       var vState = json.BookmarkState;
       var vEnd = vState.bookmarkEndDate;
       var vOrderId = vState.bookmarkOrderId;
+      log("OrderId:"  + vOrderId);
       if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
       if (vEnd !== undefined) { pEntry.set("EndDate", vEnd.date ); } else { pEntry.set("EndDate", null ); };
       if (cId === vState.bookmarkId) 
