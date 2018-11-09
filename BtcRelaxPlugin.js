@@ -158,8 +158,8 @@ if (cId !== null && cIsSent === true ) {
       log("OrderId:"  + vOrderId);
       if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
       if (vEndRaw !== undefined) { 
-        var vEndDate = Date(vEndRaw.date);  
-        pEntry.set("EndDate", vEndDate );
+        var vEndDate = moment(vEndRaw.date);  
+        pEntry.set("EndDate", vEndDate.toDate() );
        } else { pEntry.set("EndDate", null ); };
       if (cId === vState.bookmarkId) 
       { this.setPointState(pEntry,vState.bookmarkState);pEntry.set("ServerError", ""); pEntry.set("isError", false);}
