@@ -156,7 +156,8 @@ if (cId !== null && cIsSent === true ) {
       var vEndRaw = vState.bookmarkEndDate;
       var vOrderId = vState.bookmarkOrderId;
       log("OrderId:"  + vOrderId);
-      if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
+      if (vOrderId !== undefined)  
+        {  pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
       if (vEndRaw !== undefined) { 
         var vEndDate = moment(vEndRaw.date);  
         pEntry.set("EndDate", vEndDate.toDate() );
