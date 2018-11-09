@@ -176,7 +176,9 @@ var vAPI = new BtcRelaxApi("shop.bitganj.website");
 for (i=0;i<count;i++)
 {
   var cEntry = entries[i];
-  vAPI.getPointState(cEntry);
+  if (cEntry.field("EndDate") === null) {
+    vAPI.getPointState(cEntry);
+  };
   message("Process:" + i + " of " + count);
 };
 var vResultMsg = 'Registered:' + vAPI.registered + '\n Saled:' + vAPI.saled + '\n Catched:' + vAPI.catched;
