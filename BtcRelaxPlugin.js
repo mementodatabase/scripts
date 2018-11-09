@@ -137,7 +137,9 @@ BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
         break;
     default:
         break;
-    }
+    };
+	var vM =moment();
+	pEntry.set("StatusChanged", vM.toDate().toTime());
   }
 }
 
@@ -145,7 +147,7 @@ BtcRelaxApi.prototype.getPointState = function (pEntry) {
 var cId = pEntry.field("bookmarkId");
 var cIsSent = pEntry.field("isSent");
 if (cId !== null && cIsSent === true ) {
-  var query = "https://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + pEntry.author;
+  var query = "h}(((())))ttps://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + pEntry.author;
   var vResult = http().get(query);
   if (vResult.code === 200) {
     var json = JSON.parse(vResult.body);
