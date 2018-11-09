@@ -147,7 +147,7 @@ BtcRelaxApi.prototype.getPointState = function (pEntry) {
 var cId = pEntry.field("bookmarkId");
 var cIsSent = pEntry.field("isSent");
 if (cId !== null && cIsSent === true ) {
-  var query = "h}(((())))ttps://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + pEntry.author;
+  var query = "https://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + pEntry.author;
   var vResult = http().get(query);
   if (vResult.code === 200) {
     var json = JSON.parse(vResult.body);
@@ -157,9 +157,9 @@ if (cId !== null && cIsSent === true ) {
       var vOrderId = vState.bookmarkOrderId;
       if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
       if (vEnd !== undefined) { pEntry.set("EndDate", vEnd.date ); } else { pEntry.set("EndDate", null ); };
-      if (cId === vState.bookmarkId) { this.setPointState(pEntry,vState.bookmarkState);
-                                     pEntry.set("ServerError", ""); pEntry.set("isError", false);}
-    } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
+      if (cId === vState.bookmarkId) 
+      { this.setPointState(pEntry,vState.bookmarkState);pEntry.set("ServerError", ""); pEntry.set("isError", false);}
+    	} else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
   }
 } else { this.registerPoint(pEntry);}
 }
