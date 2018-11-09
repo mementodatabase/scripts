@@ -167,7 +167,7 @@ BtcRelaxApi.prototype.getPointState = function (pEntry) {
 
 function SyncLibrary(pServer = null) {
   var cLib = lib();
-  if (pServer === null) {pServer = "shop.bitganj.website" };
+  if (pServer === null) {pServer = "shop.bitganj.website"; };
   var entries = cLib.entries();
   var count = entries.length;
   var vAPI = new BtcRelaxApi("shop.bitganj.website");
@@ -184,14 +184,14 @@ function SyncLibrary(pServer = null) {
 
 function SetState(pServer = null) {
   var vEntry = entry();
-    if (pServer === null) {pServer = "shop.bitganj.website" };
+    if (pServer === null) {pServer = "shop.bitganj.website"; };
   var vApi = new BtcRelaxApi(pServer);
   vApi.setNewState(vEntry);
 }
 
 function GetState(pServer = null) {
   var vEntry = entry();
-  if (pServer === null) {pServer = "shop.bitganj.website" };
+  if (pServer === null) {pServer = "shop.bitganj.website"; };
   var vApi = new BtcRelaxApi(pServer);
   vApi.getPointState(vEntry);
 }
