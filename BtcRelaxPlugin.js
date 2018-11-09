@@ -128,16 +128,16 @@ BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
   pEntry.set("Status",pState );
   if (vStateStart !== pState)
   {
-    switch(pState) {
-    case 'Saled':
-        this.saled = this.saled + 1; 
-        break;
-    case 'Catched':
-        this.catched = this.catched + 1;
-        break;
-    default:
-        break;
-    };
+	switch(pState) {
+	    case 'Saled':
+		this.saled = this.saled + 1; 
+		break;
+	    case 'Catched':
+		this.catched = this.catched + 1;
+		break;
+	    default:
+		break;
+	};
 	var vM =moment();
 	pEntry.set("StatusChanged", vM.toDate().toTime());
   }
@@ -155,10 +155,8 @@ if (cId !== null && cIsSent === true ) {
       var vState = json.BookmarkState;
       var vEnd = vState.bookmarkEndDate;
       var vOrderId = vState.bookmarkOrderId;
-      if (vOrderId !== undefined)      { 
-      pEntry.set("OrderId", vOrderId);
-      log(vOrderId);  };
-		if (vEnd !== undefined)      { log(vEnd.date);  };
+      if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
+      if (vEnd !== undefined) { pEntry.set("EndDate", vEnd.date ); } else { pEntry.set("EndDate", null ); };
       if (cId === vState.bookmarkId) { this.setPointState(pEntry,vState.bookmarkState);
                                      pEntry.set("ServerError", ""); pEntry.set("isError", false);}
     } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
