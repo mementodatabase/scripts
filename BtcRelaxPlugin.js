@@ -158,7 +158,7 @@ if (cId !== null && cIsSent === true ) {
       log("OrderId:"  + vOrderId);
       if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
       if (vEndRaw !== undefined) { 
-        var vEndDate = moment.tz(vEndRaw.date, vEndRaw.timezone );  
+        var vEndDate = moment().parse(vEndRaw.date);  
         pEntry.set("EndDate", vEndDate );
        } else { pEntry.set("EndDate", null ); };
       if (cId === vState.bookmarkId) 
@@ -177,6 +177,7 @@ for (i=0;i<count;i++)
 {
   var cEntry = entries[i];
   vAPI.getPointState(cEntry);
+  message("Process:" + i + " of " + count);
 };
 var vResultMsg = 'Registered:' + vAPI.registered + '\n Saled:' + vAPI.saled + '\n Catched:' + vAPI.catched;
 message(vResultMsg);
