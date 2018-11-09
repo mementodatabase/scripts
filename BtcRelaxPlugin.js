@@ -128,7 +128,7 @@ BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
   pEntry.set("Status",pState );
   if (vStateStart !== pState)
   {
-	switch(pState) {
+	  switch(pState) {
 	    case 'Saled':
 		this.saled = this.saled + 1; 
 		break;
@@ -137,9 +137,9 @@ BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
 		break;
 	    default:
 		break;
-	};
-	var vM =moment();
-	pEntry.set("StatusChanged", vM.toDate().toTime());
+	  };
+	  var vM =moment();
+	  pEntry.set("StatusChanged", vM.toDate());
   }
 }
 
@@ -158,7 +158,7 @@ if (cId !== null && cIsSent === true ) {
       log("OrderId:"  + vOrderId);
       if (vOrderId !== undefined)  { pEntry.set("OrderId", vOrderId); } else { pEntry.set("OrderId", null ); };
       if (vEndRaw !== undefined) { 
-        var vEndDate = moment().parse(vEndRaw.date);  
+        var vEndDate = Date(vEndRaw.date);  
         pEntry.set("EndDate", vEndDate );
        } else { pEntry.set("EndDate", null ); };
       if (cId === vState.bookmarkId) 
