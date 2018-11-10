@@ -171,7 +171,7 @@ function SyncLibrary(pServer) {
   if (pServer === null) {pServer = "shop.bitganj.website"; };
   var entries = cLib.entries();
   var count = entries.length;
-  var vAPI = new BtcRelaxApi("shop.bitganj.website");
+  var vAPI = new BtcRelaxApi(pServer);
   for (i = 0; i < count; i++) {
     var cEntry = entries[i];
     if (cEntry.field("EndDate") === null) {
@@ -181,6 +181,10 @@ function SyncLibrary(pServer) {
   };
   var vResultMsg = 'Registered:' + vAPI.registered + '\n Saled:' + vAPI.saled + '\n Catched:' + vAPI.catched;
   message(vResultMsg);
+
+  function newFunction() {
+    return null;
+  }
 }
 
 function SetState(pServer) {
