@@ -147,6 +147,7 @@ BtcRelaxApi.prototype.getPointState = function (pEntry) {
   if (cId !== null && cIsSent === true) {
     var query = "https://" + this.server + "/api/Bookmark?action=GetPointState&bookmarkId=" + cId + "&author=" + pEntry.author;
     var vResult = http().get(query);
+    log(query);
     if (vResult.code === 200) {
       var json = JSON.parse(vResult.body);
       if (json.BookmarkResult === true) {
