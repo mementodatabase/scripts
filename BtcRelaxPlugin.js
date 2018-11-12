@@ -166,20 +166,6 @@ BtcRelaxApi.prototype.getPointState = function (pEntry) {
   } else { this.registerPoint(pEntry); }
 }
 
-function SyncProducts(pServer) {
-  var cLib = lib();
-  if (pServer === null) {pServer = "shop.bitganj.website"; };
-  var entries = cLib.entries();
-  var count = entries.length;
-  var vAPI = new BtcRelaxApi(pServer);
-  for (i = 0; i < count; i++) {
-    var cEntry = entries[i];
-    cEntry.set("Owner", cEntry.author);
-  };
-  var vResultMsg = 'Products synced!';
-  message(vResultMsg);
-}
-
 function SyncLibrary(pServer) {
   var cLib = lib();
   if (pServer === null) {pServer = "shop.bitganj.website"; };
