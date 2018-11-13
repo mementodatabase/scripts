@@ -73,25 +73,27 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
   if (vLocation !== null) {
     var loc = this.getAverageLocation(vLocation);
     var auth = pEntry.author;
-    var price = pEntry.field('TotalPrice');
-    var title = this.getAdvertiseTitle(pEntry);
-    var params = encodeURIComponent('[{"title":"' + title + '","price":' + price +
-      ',"location":{"latitude":' + loc.lat + ',"longitude":' + loc.lng + '}}]');
-    var vResult = http().get("https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
-    if (vResult.code == 200) {
-      log(vResult.body);
-      var json = JSON.parse(vResult.body);
-      if (json.BookmarkResult === true) {
-        pEntry.set("isSent", true);
-        pEntry.set("BookmarkId", json.BookmarkState.bookmarkId);
-        pEntry.set("Status", json.BookmarkState.bookmarkState);
-        pEntry.set("Latitude", loc.lat);
-        pEntry.set("Longitude", loc.lng);
-        pEntry.set("ServerError", "");
-        pEntry.set("isError", false);
-        this.registered = this.registered + 1;
-      } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
-    } else { pEntry.set("ServerError", vResult.code + "as a result of call:"); pEntry.set("isError", true); };
+    if (auth !== null) {
+      var price = pEntry.field('TotalPrice');
+      var title = this.getAdvertiseTitle(pEntry);
+      var params = encodeURIComponent('[{"title":"' + title + '","price":' + price +
+        ',"location":{"latitude":' + loc.lat + ',"longitude":' + loc.lng + '}}]');
+      var vResult = http().get("https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params);
+      if (vResult.code == 200) {
+        log(vResult.body);
+        var json = JSON.parse(vResult.body);
+        if (json.BookmarkResult === true) {
+            pEntry.set("isSent", true);
+            pEntry.set("BookmarkId", json.BookmarkState.bookmarkId);
+            pEntry.set("Status", json.BookmarkState.bookmarkState);
+            pEntry.set("Latitude", loc.lat);
+            pEntry.set("Longitude", loc.lng);
+            pEntry.set("ServerError", "");
+            pEntry.set("isError", false);
+            this.registered = this.registered + 1;
+          } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
+      } else { pEntry.set("ServerError", "As a result of call:" + vResult.code ); pEntry.set("isError", true); };
+    } else { pEntry.set("ServerError", "Upload library to cloud before register points at server!"); pEntry.set("isError", true); };
   } else { pEntry.set("ServerError", "Location is not set. Set location before sync!"); pEntry.set("isError", true); };
 }
 
