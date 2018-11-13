@@ -79,8 +79,8 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
       var params = encodeURIComponent('[{"title":"' + title + '","price":' + price +
         ',"location":{"latitude":' + loc.lat + ',"longitude":' + loc.lng + '}}]');
       var vURI = "https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params;
-      var vResult = http().get(vURI);
       log(vURI);
+      var vResult = http().get(vURI);
       if (vResult.code == 200) {
         log(vResult.body);
         var json = JSON.parse(vResult.body);
