@@ -9,19 +9,25 @@ function BtcRelaxApi(v_server, v_tokenKey) {
 
 BtcRelaxApi.prototype.setNewState = function (pEntry) {
   var vNewState = arg('NewState');
-  var vPointId = pEntry.field("BookmarkId");
-  var auth = pEntry.author;
-  var qry = "https://" + this.server + "/api/Bookmark?action=SetNewState&author=" + auth + "&bookmarkId=" + vPointId + "&state=" + vNewState;
-  log(qry);
-  var vResult = http().get(qry);
-  if (vResult.code == 200) {
-    var json = JSON.parse(vResult.body);
-    if (json.BookmarkResult === true) {
-      this.setPointState(pEntry, json.BookmarkState.bookmarkState);
-      pEntry.set("ServerError", "");
-      pEntry.set("isError", false);
-    } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
-  } else { message(vResult.code); };
+  var cId = pEntry.field("bookmarkId");
+  var cIsSent = pEntry.field("isSent");
+  if (cId === null && cIsSent === false)
+  {
+    this.registerPoint(pEntry);
+  }  else {
+    var auth = pEntry.author;
+    var qry = "https://" + this.server + "/api/Bookmark?action=SetNewState&author=" + auth + "&bookmarkId=" + vPointId + "&state=" + vNewState;
+    log(qry);
+    var vResult = http().get(qry);
+    if (vResult.code == 200) {
+      var json = JSON.parse(vResult.body);
+      if (json.BookmarkResult === true) {
+        this.setPointState(pEntry, json.BookmarkState.bookmarkState);
+        pEntry.set("ServerError", "");
+        pEntry.set("isError", false);
+      } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
+    } else { message(vResult.code); };
+  } 
 }
 
 
@@ -70,10 +76,7 @@ BtcRelaxApi.prototype.getAdvertiseTitle = function (pEntry) {
 
 BtcRelaxApi.prototype.registerPoint = function (pEntry) {
   var vLocation = pEntry.field("Loc");
-  var cId = pEntry.field("bookmarkId");
-  var cIsSent = pEntry.field("isSent");
-  if (cId === null && cIsSent === false) {
-    if (vLocation !== null) {
+  if (vLocation !== null) {
       var loc = this.getAverageLocation(vLocation);
       var auth = pEntry.author;
       if (auth !== null) {
@@ -100,7 +103,6 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
         } else { pEntry.set("ServerError", "As a result of call:" + vResult.code ); pEntry.set("isError", true); };
       } else { pEntry.set("ServerError", "Upload library to cloud before register points at server!"); pEntry.set("isError", true); };
     } else { pEntry.set("ServerError", "Location is not set. Set location before sync!"); pEntry.set("isError", true); };
-  } else { pEntry.set("ServerError", "Point already registered!"); pEntry.set("isError", true); };
 }
 
 BtcRelaxApi.prototype.updatePoint = function (pEntry) {
@@ -127,7 +129,7 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
         pEntry.set("isError", false);
       } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
     } else { message(vResult.code); };  
-  } else { message("Updating point info allowed only in Prepare state!"); };
+  };
 }
 
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
@@ -205,13 +207,6 @@ function UpdatePoint(pServer) {
   vApi.updatePoint(vEntry);
 }
 
-
-function RegisterPoint(pServer) {
-  var vEntry = entry();
-  if (pServer === null) {pServer = "shop.bitganj.website"; };
-  var vApi = new BtcRelaxApi(pServer);
-  vApi.registerPoint(vEntry);
-}
 
 function GetState(pServer) {
   var vEntry = entry();
