@@ -1,6 +1,6 @@
 /* global http, moment */
 function BtcRelaxApi(v_server, v_tokenKey) {
-  this.server = v_server !== undefined ? v_server : 'shop.btcrelax.xyz';
+  this.server = v_server !== undefined ? v_server : 'tnf.bitganj.website';
   this.tokenKey = v_tokenKey !== null ? v_tokenKey : null;
   this.registered = 0;
   this.saled = 0;
@@ -16,7 +16,7 @@ BtcRelaxApi.prototype.setNewState = function (pEntry) {
     this.registerPoint(pEntry);
   }  else {
     var auth = pEntry.author;
-    var qry = "https://" + this.server + "/api/Bookmark?action=SetNewState&author=" + auth + "&bookmarkId=" + vPointId + "&state=" + vNewState;
+    var qry = "https://" + this.server + "/api/Bookmark?action=SetNewState&author=" + auth + "&bookmarkId=" + cId + "&state=" + vNewState;
     log(qry);
     var vResult = http().get(qry);
     if (vResult.code == 200) {
