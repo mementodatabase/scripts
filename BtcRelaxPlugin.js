@@ -104,34 +104,34 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
 }
 
 BtcRelaxApi.prototype.updatePoint = function (pEntry) {
-  var auth = pEntry.author;
-  var vLink = pEntry.field("URLToPhoto");
-  var vDescr = pEntry.field("Description");
-  var vPointId = pEntry.field("BookmarkId");
-  var vRegionTitle = this.getRegionTitle(pEntry);
-  var params = encodeURIComponent('[{"region":"' + vRegionTitle + '","link":"' + vLink + '","description":"' + vDescr + '"}]');
-  var vResult = http().get("https://" + this.server + "/api/Bookmark?action=UpdatePoint&author=" + auth + "&bookmarkId=" + vPointId + "&params=" + params);
-  if (vResult.code == 200) {
-    log(vResult.body);
-    var json = JSON.parse(vResult.body);
-    if (json.BookmarkResult === true) {
-      pEntry.set("Latitude", json.BookmarkState.bookmarkLatitude);
-      pEntry.set("Longitude", json.BookmarkState.bookmarkLongitude);
-      pEntry.set("URLToPhoto", json.BookmarkState.bookmarkPhotoLink);
-      pEntry.set("Description", json.BookmarkState.bookmarkDescription);
-      pEntry.set("ServerError", "");
-      pEntry.set("isError", false);
-    } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
-  } else { message(vResult.code); };
+  var vStateStart = pEntry.field("Status");
+  if (vStateStart === 'Preparing') {
+    var auth = pEntry.author;
+    var vLink = pEntry.field("URLToPhoto");
+    var vDescr = pEntry.field("Description");
+    var vPointId = pEntry.field("BookmarkId");
+    var vRegionTitle = this.getRegionTitle(pEntry);
+    var params = encodeURIComponent('[{"region":"' + vRegionTitle + '","link":"' + vLink + '","description":"' + vDescr + '"}]');
+    var vRequest = "https://" + this.server + "/api/Bookmark?action=UpdatePoint&author=" + auth + "&bookmarkId=" + vPointId + "&params=" + params;
+    log(vRequest);
+    var vResult = http().get(vRequest);
+    if (vResult.code == 200) {
+      log(vResult.body);
+      var json = JSON.parse(vResult.body);
+      if (json.BookmarkResult === true) {
+        pEntry.set("Latitude", json.BookmarkState.bookmarkLatitude);
+        pEntry.set("Longitude", json.BookmarkState.bookmarkLongitude);
+        pEntry.set("URLToPhoto", json.BookmarkState.bookmarkPhotoLink);
+        pEntry.set("Description", json.BookmarkState.bookmarkDescription);
+        pEntry.set("ServerError", "");
+        pEntry.set("isError", false);
+      } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
+    } else { message(vResult.code); };  
+  } else { message("Updating point info allowed only in Prepare state!"); };
 }
 
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
   log("State:" + pState);
-  var vStateStart = pEntry.field("Status");
-  if (pState === 'Preparing') {
-    var vUrlToPhoto = pEntry.field('URLToPhoto');
-    if (vUrlToPhoto !== "") { this.updatePoint(pEntry); }
-  }
   pEntry.set("Status", pState);
   if (vStateStart !== pState) {
     switch (pState) {
