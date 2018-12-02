@@ -131,21 +131,21 @@ BtcRelaxApi.prototype.updatePoint = function (pEntry) {
 }
 
 BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
-  log("State:" + pState);
-  pEntry.set("Status", pState);
+  var vStateStart = pEntry.field("Status");
   if (vStateStart !== pState) {
-    switch (pState) {
-      case 'Saled':
-        this.saled = this.saled + 1;
-        break;
-      case 'Catched':
-        this.catched = this.catched + 1;
-        break;
-      default:
-        break;
-    };
-    var vM = moment();
-    pEntry.set("StatusChanged", vM.toDate());
+    pEntry.set("Status", pState);
+      switch (pState) {
+        case 'Saled':
+          this.saled = this.saled + 1;
+          break;
+        case 'Catched':
+          this.catched = this.catched + 1;
+          break;
+        default:
+          break;
+      };
+      var vM = moment();
+      pEntry.set("StatusChanged", vM.toDate());
   }
 }
 
