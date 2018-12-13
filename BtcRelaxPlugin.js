@@ -5,6 +5,7 @@ function BtcRelaxApi(v_server, v_tokenKey) {
   this.registered = 0;
   this.saled = 0;
   this.catched = 0;
+  this.ordersLib = libByName()
 }
 
 BtcRelaxApi.prototype.setNewState = function (pEntry) {
@@ -176,6 +177,24 @@ BtcRelaxApi.prototype.getPointState = function (pEntry) {
   }
 }
 
+BtcRelaxApi.prototype.getProductState = function (pEntry) {
+  var cId = pEntry.field("ProductId");
+  if (Number.isInteger(cId)) {
+    var query = "https://" + this.server + "/api/Product?action=GetProductState&ProductId=" + cId + "&author=" + pEntry.author;
+    log(query);
+    var vResult = http().get(query);    
+    if (vResult.code === 200) {
+      var json = JSON.parse(vResult.body);
+      if (json.ProductResult === true) {
+        var vState = json.ProductState;
+        if (cId === vState.ProductId) 
+           { this.setProductState(pEntry, vState); 
+            pEntry.set("ServerError", ""); pEntry.set("isError", false); }
+      } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
+    }
+  }
+}
+
 function SyncLibrary(pServer) {
   var cLib = lib();
   if (pServer === null) {pServer = "shop.bitganj.website"; };
@@ -213,4 +232,12 @@ function GetState(pServer) {
   if (pServer === null) {pServer = "shop.bitganj.website"; };
   var vApi = new BtcRelaxApi(pServer);
   vApi.getPointState(vEntry);
+}
+
+function SyncProduct(pServer)
+{
+  var vEntry = entry();
+  if (pServer === null) {pServer = "shop.bitganj.website"; };
+  var vApi = new BtcRelaxApi(pServer);
+  vApi.getProductState(vEntry);
 }
