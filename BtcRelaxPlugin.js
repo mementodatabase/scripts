@@ -192,6 +192,28 @@ BtcRelaxApi.prototype.getProductState = function (pEntry) {
             pEntry.set("ServerError", ""); pEntry.set("isError", false); }
       } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
     }
+  } else {pEntry.set("ServerError", "Product need to register!"); pEntry.set("isError", true);};
+}
+
+BtcRelaxApi.prototype.setProductState = function (pEntry, pState) {
+  var vStateStart = pEntry.field("Status");
+  if (vStateStart !== pState) {
+    pEntry.set("Status", pState);
+      switch (pState) {
+        case 'Created':
+          this.products_created = this.products_created + 1;
+          break;
+        case 'Registered':
+          this.products_registered = this.products_registered + 1;
+          break;
+        case 'Published':
+          this.products_published = this.products_published + 1;
+          break;
+        default:
+          break;
+      };
+      var vM = moment();
+      pEntry.set("StatusChanged", vM.toDate());
   }
 }
 
@@ -234,10 +256,17 @@ function GetState(pServer) {
   vApi.getPointState(vEntry);
 }
 
-function SyncProduct(pServer)
-{
+function SyncProduct(pServer) {
   var vEntry = entry();
   if (pServer === null) {pServer = "shop.bitganj.website"; };
   var vApi = new BtcRelaxApi(pServer);
   vApi.getProductState(vEntry);
+}
+
+
+function SetProductState(pServer) {
+  var vEntry = entry();
+    if (pServer === null) {pServer = "shop.bitganj.website"; };
+  var vApi = new BtcRelaxApi(pServer);
+  vApi.setProductState(vEntry);
 }
