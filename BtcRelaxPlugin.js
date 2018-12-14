@@ -358,8 +358,10 @@ function SetProductState(pServer) {
   if (pServer === null) {
     pServer = "shop.bitganj.website";
   };
-  var vApi = new BtcRelaxApi(pServer);
-  vApi.setProductState(vEntry);
+  if (vEntry !== null) {
+      var vApi = new BtcRelaxApi(pServer);
+      vApi.setProductState(vEntry);
+  }
 }
 
 function SyncProduct(pServer) {
