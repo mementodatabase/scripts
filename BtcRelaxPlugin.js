@@ -106,6 +106,35 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
     } else { pEntry.set("ServerError", "Location is not set. Set location before sync!"); pEntry.set("isError", true); };
 }
 
+BtcRelaxApi.prototype.registerProduct = function (pEntry) {
+  var vProductId = pEntry.field("ProductId");
+  if (!Number.isInteger(vProductId)) {
+      var auth = pEntry.author;
+      pEntry.
+      if (auth !== null) {
+        var params = encodeURIComponent('[{"title":"' + pEntry.field() + '","author":' + auth + '}]');
+        var vURI = "https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params;
+        log(vURI);
+        var vResult = http().get(vURI);
+        if (vResult.code == 200) {
+          log(vResult.body);
+          var json = JSON.parse(vResult.body);
+          if (json.BookmarkResult === true) {
+              pEntry.set("isSent", true);
+              pEntry.set("BookmarkId", json.BookmarkState.bookmarkId);
+              pEntry.set("Status", json.BookmarkState.bookmarkState);
+              pEntry.set("Latitude", loc.lat);
+              pEntry.set("Longitude", loc.lng);
+              pEntry.set("ServerError", "");
+              pEntry.set("isError", false);
+              this.registered = this.registered + 1;
+            } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
+        } else { pEntry.set("ServerError", "As a result of call:" + vResult.code ); pEntry.set("isError", true); };
+      } else { pEntry.set("ServerError", "Upload library to cloud before register points at server!"); pEntry.set("isError", true); };
+    } else { pEntry.set("ServerError", "Location is not set. Set location before sync!"); pEntry.set("isError", true); };
+}
+
+
 BtcRelaxApi.prototype.updatePoint = function (pEntry) {
   var vStateStart = pEntry.field("Status");
   if (vStateStart === 'Preparing') {
@@ -196,15 +225,22 @@ BtcRelaxApi.prototype.getProductState = function (pEntry) {
 }
 
 BtcRelaxApi.prototype.setProductState = function (pEntry, pState) {
+  var vNewState = arg('NewState');
+  var cId = pEntry.field("ProductId");
   var vStateStart = pEntry.field("Status");
-  if (vStateStart !== pState) {
-    pEntry.set("Status", pState);
-      switch (pState) {
+  if (vStateStart !== vNewState) {
+    pEntry.set("Status", vNewState);
+      switch (vNewState) {
         case 'Created':
+          
           this.products_created = this.products_created + 1;
           break;
         case 'Registered':
-          this.products_registered = this.products_registered + 1;
+          if ((Number.isInteger(cId) === false) &&  (vStateStart === 'Created' ))  {
+
+
+            this.products_registered = this.products_registered + 1;
+          }
           break;
         case 'Published':
           this.products_published = this.products_published + 1;
@@ -216,6 +252,8 @@ BtcRelaxApi.prototype.setProductState = function (pEntry, pState) {
       pEntry.set("StatusChanged", vM.toDate());
   }
 }
+
+
 
 function SyncLibrary(pServer) {
   var cLib = lib();
