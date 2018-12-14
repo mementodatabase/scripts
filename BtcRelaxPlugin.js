@@ -107,31 +107,26 @@ BtcRelaxApi.prototype.registerPoint = function (pEntry) {
 }
 
 BtcRelaxApi.prototype.registerProduct = function (pEntry) {
-  var vProductId = pEntry.field("ProductId");
-  if (!Number.isInteger(vProductId)) {
       var auth = pEntry.author;
       if (auth !== null) {
-        var commands =  '[{"uuid":"' + guid() + '","","args":{"title":"' + entry().field("Title") + '"}}]';
-        var params = encodeURIComponent(commands);
-        var vURI = "https://" + this.server + "/api/Product?action=CreateNew&author=" + auth + "&params=" + params;
+        var vProductName = pEntry.field('Title');
+        var vProductUrl = pEntry.field('ProductURL');
+        var params = ('[{"ProuctName":"' + vProductName + '","ProductURL":"' + vProductUrl + '"}]');
+        var vURI = "https://" + this.server + "/api/Product?action=Create&author=" + auth + "&params=" + params;
         log(vURI);
         var vResult = http().get(vURI);
         if (vResult.code == 200) {
           log(vResult.body);
           var json = JSON.parse(vResult.body);
-          if (json.BookmarkResult === true) {
-              pEntry.set("isSent", true);
-              pEntry.set("BookmarkId", json.BookmarkState.bookmarkId);
-              pEntry.set("Status", json.BookmarkState.bookmarkState);
-              pEntry.set("Latitude", loc.lat);
-              pEntry.set("Longitude", loc.lng);
+          if (json.ProductResult === true) {
+              pEntry.set("ProductId", json.ProductState.ProductId);
+              pEntry.set("Title", json.ProductState.ProductName);
+              pEntry.set("ProductURL", json.ProductState.ProductURL);
               pEntry.set("ServerError", "");
               pEntry.set("isError", false);
-              this.registered = this.registered + 1;
-            } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
+            } else { pEntry.set("ServerError", json.ProductState); pEntry.set("isError", true); };
         } else { pEntry.set("ServerError", "As a result of call:" + vResult.code ); pEntry.set("isError", true); };
       } else { pEntry.set("ServerError", "Upload library to cloud before register prducts at server!"); pEntry.set("isError", true); };
-    } else { pEntry.set("ServerError", "ProductId already filled!" ); pEntry.set("isError", true); };
 }
 
 
@@ -209,7 +204,7 @@ BtcRelaxApi.prototype.getPointState = function (pEntry) {
 BtcRelaxApi.prototype.getProductState = function (pEntry) {
   var cId = pEntry.field("ProductId");
   if (Number.isInteger(cId)) {
-    var query = "https://" + this.server + "/api/Product?action=GetProductState&ProductId=" + cId + "&author=" + pEntry.author;
+    var query = "https://" + this.server + "/api/Product?action=GetProductState&ProductId=" + cId ;
     log(query);
     var vResult = http().get(query);    
     if (vResult.code === 200) {
@@ -217,29 +212,26 @@ BtcRelaxApi.prototype.getProductState = function (pEntry) {
       if (json.ProductResult === true) {
         var vState = json.ProductState;
         if (cId === vState.ProductId) 
-           { this.setProductState(pEntry, vState); 
-            pEntry.set("ServerError", ""); pEntry.set("isError", false); }
-      } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); }
+           { 
+            pEntry.set("ProductId", json.ProductState.ProductId);
+            pEntry.set("Title", json.ProductState.ProductName);
+            pEntry.set("ProductURL", json.ProductState.ProductURL);
+            pEntry.set("ServerError", ""); pEntry.set("isError", false); 
+          }
+      } else { pEntry.set("ServerError", json.ProductError); pEntry.set("isError", true); }
     }
-  } else {pEntry.set("ServerError", "Product need to register!"); pEntry.set("isError", true);};
+  };
 }
 
-BtcRelaxApi.prototype.setProductState = function (pEntry, pState) {
+BtcRelaxApi.prototype.setProductState = function (pEntry) {
   var vNewState = arg('NewState');
   var cId = pEntry.field("ProductId");
   var vStateStart = pEntry.field("Status");
   if (vStateStart !== vNewState) {
-    pEntry.set("Status", vNewState);
       switch (vNewState) {
-        case 'Created':
-          
-          this.products_created = this.products_created + 1;
-          break;
-        case 'Registered':
+        case 'Registered':          
           if ((Number.isInteger(cId) === false) &&  (vStateStart === 'Created' ))  {
-
-
-            this.products_registered = this.products_registered + 1;
+              this.registerProduct(pEntry);
           }
           break;
         case 'Published':
@@ -294,6 +286,14 @@ function GetState(pServer) {
   vApi.getPointState(vEntry);
 }
 
+function SetProductState(pServer)
+{
+  var vEntry = entry();
+  if (pServer === null) {pServer = "shop.bitganj.website"; };
+  var vApi = new BtcRelaxApi(pServer);
+  vApi.setProductState(vEntry);
+}
+
 function SyncProduct(pServer) {
   var vEntry = entry();
   if (pServer === null) {pServer = "shop.bitganj.website"; };
@@ -302,9 +302,15 @@ function SyncProduct(pServer) {
 }
 
 
-function SetProductState(pServer) {
-  var vEntry = entry();
-    if (pServer === null) {pServer = "shop.bitganj.website"; };
-  var vApi = new BtcRelaxApi(pServer);
-  vApi.setProductState(vEntry);
+function SyncProducts(pServer) {
+  var cLib = lib();
+  if (pServer === null) {pServer = "shop.bitganj.website"; };
+  var entries = cLib.entries();
+  var count = entries.length;
+  var vAPI = new BtcRelaxApi(pServer);
+  for (i = 0; i < count; i++) {
+    var cEntry = entries[i];
+    vAPI.getProductState(cEntry);
+    message("Process:" + i + " of " + count);
+  };
 }
