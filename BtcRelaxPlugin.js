@@ -231,7 +231,6 @@ BtcRelaxApi.prototype.setProductState = function (pEntry) {
       switch (vNewState) {
         case 'Registered':          
           if ((Number.isInteger(cId) === false) &&  (vStateStart === 'Created' ))  {
-              message('Registering!');
               this.registerProduct(pEntry);
           }
           break;
