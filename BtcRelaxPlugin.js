@@ -110,10 +110,10 @@ BtcRelaxApi.prototype.registerProduct = function (pEntry) {
   var vProductId = pEntry.field("ProductId");
   if (!Number.isInteger(vProductId)) {
       var auth = pEntry.author;
-      pEntry.
       if (auth !== null) {
-        var params = encodeURIComponent('[{"title":"' + pEntry.field() + '","author":' + auth + '}]');
-        var vURI = "https://" + this.server + "/api/Bookmark?action=CreateNewPoint&author=" + auth + "&params=" + params;
+        var commands =  '[{"uuid":"' + guid() + '","","args":{"title":"' + entry().field("Title") + '"}}]';
+        var params = encodeURIComponent(commands);
+        var vURI = "https://" + this.server + "/api/Product?action=CreateNew&author=" + auth + "&params=" + params;
         log(vURI);
         var vResult = http().get(vURI);
         if (vResult.code == 200) {
@@ -130,8 +130,8 @@ BtcRelaxApi.prototype.registerProduct = function (pEntry) {
               this.registered = this.registered + 1;
             } else { pEntry.set("ServerError", json.BookmarkError); pEntry.set("isError", true); };
         } else { pEntry.set("ServerError", "As a result of call:" + vResult.code ); pEntry.set("isError", true); };
-      } else { pEntry.set("ServerError", "Upload library to cloud before register points at server!"); pEntry.set("isError", true); };
-    } else { pEntry.set("ServerError", "Location is not set. Set location before sync!"); pEntry.set("isError", true); };
+      } else { pEntry.set("ServerError", "Upload library to cloud before register prducts at server!"); pEntry.set("isError", true); };
+    } else { pEntry.set("ServerError", "ProductId already filled!" ); pEntry.set("isError", true); };
 }
 
 
