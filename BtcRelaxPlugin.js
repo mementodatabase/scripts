@@ -8,7 +8,7 @@ function BtcRelaxApi(v_server, v_tokenKey) {
   this.ordersLib = libByName()
 }
 
-BtcRelaxApi.prototype.setNewState = function(pEntry) {
+BtcRelaxApi.prototype.setNewState = function (pEntry) {
   var vNewState = arg('NewState');
   var cId = pEntry.field("bookmarkId");
   var cIsSent = pEntry.field("isSent");
@@ -36,7 +36,7 @@ BtcRelaxApi.prototype.setNewState = function(pEntry) {
 }
 
 
-BtcRelaxApi.prototype.getRegionTitle = function(pEntry) {
+BtcRelaxApi.prototype.getRegionTitle = function (pEntry) {
   var cReg = pEntry.field("Region");
   var vRegCounts = cReg.length;
   var vRegion = null;
@@ -46,7 +46,7 @@ BtcRelaxApi.prototype.getRegionTitle = function(pEntry) {
   return vRegion;
 }
 
-BtcRelaxApi.prototype.getRegionPath = function(pEntry) {
+BtcRelaxApi.prototype.getRegionPath = function (pEntry) {
   var res;
   res = pEntry.field("RegionTitle");
   var parCnt = pEntry.field("ParentRegion").length;
@@ -56,7 +56,7 @@ BtcRelaxApi.prototype.getRegionPath = function(pEntry) {
   return res;
 }
 
-BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
+BtcRelaxApi.prototype.getAverageLocation = function (vLocation) {
   var nLat = vLocation.lat;
   var nLng = vLocation.lng;
   var i = 1;
@@ -72,7 +72,7 @@ BtcRelaxApi.prototype.getAverageLocation = function(vLocation) {
   };
 }
 
-BtcRelaxApi.prototype.getVersion = function() {
+BtcRelaxApi.prototype.getVersion = function () {
   result = http().get("https://" + this.server + "/api/GetVer");
   if (result.code == 200) {
     var vGetVerResult = JSON.parse(result.body);
@@ -80,7 +80,7 @@ BtcRelaxApi.prototype.getVersion = function() {
   }
 }
 
-BtcRelaxApi.prototype.getAdvertiseTitle = function(pEntry) {
+BtcRelaxApi.prototype.getAdvertiseTitle = function (pEntry) {
   var inbox = pEntry.field('InBox');
   var result = '';
   for (var i2 = 0; i2 < inbox.length; i2++) {
@@ -94,7 +94,7 @@ BtcRelaxApi.prototype.getAdvertiseTitle = function(pEntry) {
   return result;
 }
 
-BtcRelaxApi.prototype.registerPoint = function(pEntry) {
+BtcRelaxApi.prototype.registerPoint = function (pEntry) {
   var vLocation = pEntry.field("Loc");
   if (vLocation !== null) {
     var loc = this.getAverageLocation(vLocation);
@@ -137,7 +137,7 @@ BtcRelaxApi.prototype.registerPoint = function(pEntry) {
   };
 }
 
-BtcRelaxApi.prototype.registerProduct = function(pEntry) {
+BtcRelaxApi.prototype.registerProduct = function (pEntry) {
   var auth = pEntry.author;
   if (auth !== null) {
     var vProductName = pEntry.field('Title');
@@ -155,6 +155,7 @@ BtcRelaxApi.prototype.registerProduct = function(pEntry) {
         pEntry.set("ProductURL", json.ProductState.ProductURL);
         pEntry.set("ServerError", "");
         pEntry.set("isError", false);
+        return true;
       } else {
         pEntry.set("ServerError", json.ProductState);
         pEntry.set("isError", true);
@@ -167,9 +168,10 @@ BtcRelaxApi.prototype.registerProduct = function(pEntry) {
     pEntry.set("ServerError", "Upload library to cloud before register prducts at server!");
     pEntry.set("isError", true);
   };
+  return false;
 }
 
-BtcRelaxApi.prototype.updatePoint = function(pEntry) {
+BtcRelaxApi.prototype.updatePoint = function (pEntry) {
   var vStateStart = pEntry.field("Status");
   if (vStateStart === 'Preparing') {
     var auth = pEntry.author;
@@ -201,7 +203,7 @@ BtcRelaxApi.prototype.updatePoint = function(pEntry) {
   };
 }
 
-BtcRelaxApi.prototype.setPointState = function(pEntry, pState) {
+BtcRelaxApi.prototype.setPointState = function (pEntry, pState) {
   var vStateStart = pEntry.field("Status");
   if (vStateStart !== pState) {
     pEntry.set("Status", pState);
@@ -220,7 +222,7 @@ BtcRelaxApi.prototype.setPointState = function(pEntry, pState) {
   }
 }
 
-BtcRelaxApi.prototype.getPointState = function(pEntry) {
+BtcRelaxApi.prototype.getPointState = function (pEntry) {
   var cId = pEntry.field("bookmarkId");
   var cIsSent = pEntry.field("isSent");
   if (cId !== null && cIsSent === true) {
@@ -258,7 +260,7 @@ BtcRelaxApi.prototype.getPointState = function(pEntry) {
   }
 }
 
-BtcRelaxApi.prototype.getProductState = function(pEntry) {
+BtcRelaxApi.prototype.getProductState = function (pEntry) {
   var cId = pEntry.field("ProductId");
   if (Number.isInteger(cId)) {
     var query = "https://" + this.server + "/api/Product?action=GetProductState&ProductId=" + cId;
@@ -283,15 +285,18 @@ BtcRelaxApi.prototype.getProductState = function(pEntry) {
   };
 }
 
-BtcRelaxApi.prototype.setProductState = function(pEntry) {
+BtcRelaxApi.prototype.setProductState = function (pEntry) {
   var vNewState = arg('NewState');
   var cId = pEntry.field("ProductId");
   var vStateStart = pEntry.field("Status");
-  if (vStateStart !== vNewState) {
+  if ((vStateStart !== vNewState) && (vNewState !== undefined)) {
     switch (vNewState) {
       case 'Registered':
         if ((Number.isInteger(cId) === false) && (vStateStart === 'Created')) {
-          this.registerProduct(pEntry);
+          if (this.registerProduct(pEntry) === true)
+          {
+            pEntry.set("Status", vNewState ); 
+          };
         }
         break;
       case 'Published':
@@ -359,8 +364,8 @@ function SetProductState(pServer) {
     pServer = "shop.bitganj.website";
   };
   if (vEntry !== null) {
-      var vApi = new BtcRelaxApi(pServer);
-      vApi.setProductState(vEntry);
+    var vApi = new BtcRelaxApi(pServer);
+    vApi.setProductState(vEntry);
   }
 }
 
@@ -389,14 +394,15 @@ function SyncProducts(pServer) {
 }
 
 function SyncVersions() {
-    var clib = lib(); 
-    var entries = clib.entries();
-    for(var i=0;i<entries.length;i++)
-    {
-      var cEntry = entries[i];
-      var vHost = cEntry.field("Hostname");
-      var vAPI = new BtcRelaxApi(vHost);
-      var v = vAPI.getVersion();
-      if (v !== false){ cEntry.set("responce",v); }
+  var clib = lib();
+  var entries = clib.entries();
+  for (var i = 0; i < entries.length; i++) {
+    var cEntry = entries[i];
+    var vHost = cEntry.field("Hostname");
+    var vAPI = new BtcRelaxApi(vHost);
+    var v = vAPI.getVersion();
+    if (v !== false) {
+      cEntry.set("responce", v);
     }
+  }
 }
