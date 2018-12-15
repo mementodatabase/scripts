@@ -153,6 +153,7 @@ BtcRelaxApi.prototype.registerProduct = function (pEntry) {
         pEntry.set("ProductId", json.ProductState.ProductId);
         pEntry.set("Title", json.ProductState.ProductName);
         pEntry.set("ProductURL", json.ProductState.ProductURL);
+        pEntry.set("Owner", auth);
         pEntry.set("ServerError", "");
         pEntry.set("isError", false);
         return true;
