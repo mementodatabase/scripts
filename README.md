@@ -17,4 +17,6 @@ For Library:
             Trigger, after update: UpdatePoint();
 
 [S]Products - Add Entry action: SetProductState()
-              Add trigger after open: GetProductState()
+                         SyncProduct: for refresh item state
+                SyncProducts: For refresh all library
+Add trigger after open: GetProductState()
