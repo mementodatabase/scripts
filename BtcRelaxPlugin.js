@@ -370,7 +370,7 @@ function SetProductState(pServer) {
   }
 }
 
-function SyncProduct(pServer) {
+function GetProductState(pServer) {
   var vEntry = entry();
   if (pServer === null) {
     pServer = "shop.bitganj.website";
