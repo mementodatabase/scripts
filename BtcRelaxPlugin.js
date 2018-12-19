@@ -333,20 +333,6 @@ class BtcRelaxApi {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Public methods
 // {Points} operaions
 
