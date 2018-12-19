@@ -419,7 +419,7 @@ function GetProductState(pServer) {
   vApi.getProductState(vEntry);
 }
 
-//// {Versions} operaions
+// {Versions} operaions
 
 function SyncVersions() {
   var clib = lib();
