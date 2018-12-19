@@ -268,22 +268,21 @@ BtcRelaxApi.prototype.getProductState = function (pEntry) {
     log(query);
     var vResult = http().get(query);
     if (vResult.code === 200) {
+      log(JSON.stringify(vResult.body));
       var json = JSON.parse(vResult.body);
       if (json.ProductResult === true) {
-        var vState = json.ProductState;
-        if (cId === vState.ProductId) {
+          //var vState = json.ProductState;
           pEntry.set("ProductId", json.ProductState.ProductId);
           pEntry.set("Title", json.ProductState.ProductName);
           pEntry.set("ProductURL", json.ProductState.ProductURL);
           pEntry.set("ServerError", "");
           pEntry.set("isError", false);
-        }
-      } else {
+        } else {
         pEntry.set("ServerError", json.ProductError);
         pEntry.set("isError", true);
       }
     }
-  };
+  }
 }
 
 BtcRelaxApi.prototype.setProductState = function (pEntry) {
@@ -311,7 +310,8 @@ BtcRelaxApi.prototype.setProductState = function (pEntry) {
   }
 }
 
-
+// Public methods
+// {Points} operaions
 
 function SyncLibrary(pServer) {
   var cLib = lib();
@@ -359,6 +359,23 @@ function GetState(pServer) {
   vApi.getPointState(vEntry);
 }
 
+// {Products} operaions
+
+function SyncProducts(pServer) {
+  var cLib = lib();
+  if (pServer === null) {
+    pServer = "shop.bitganj.website";
+  };
+  var entries = cLib.entries();
+  var count = entries.length;
+  var vAPI = new BtcRelaxApi(pServer);
+  for (i = 0; i < count; i++) {
+    var cEntry = entries[i];
+    vAPI.getProductState(cEntry);
+    message("Process:" + i + " of " + count);
+  };
+}
+
 function SetProductState(pServer) {
   var vEntry = entry();
   if (pServer === null) {
@@ -379,20 +396,7 @@ function GetProductState(pServer) {
   vApi.getProductState(vEntry);
 }
 
-function SyncProducts(pServer) {
-  var cLib = lib();
-  if (pServer === null) {
-    pServer = "shop.bitganj.website";
-  };
-  var entries = cLib.entries();
-  var count = entries.length;
-  var vAPI = new BtcRelaxApi(pServer);
-  for (i = 0; i < count; i++) {
-    var cEntry = entries[i];
-    vAPI.getProductState(cEntry);
-    message("Process:" + i + " of " + count);
-  };
-}
+//// {Versions} operaions
 
 function SyncVersions() {
   var clib = lib();
